@@ -31,7 +31,7 @@ class WordSearchHome extends Component {
    render() {
       return (
 	 <header className="header vertical-flex">
-	    <h1 className="heading-1">A Dictionary of the English Language</h1>
+	    <h1 className="heading-1">A Dictionary of the English Language qqq</h1>
 	    <form acceptCharset="utf-8" 
 	       autoCapitalize="none" 
 	       autoComplete="off" 
