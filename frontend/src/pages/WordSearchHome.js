@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
-import searchIcon from './images/search_FILL0_wght700_GRAD200_opsz48.svg';
-import './WordSearchHome.css';
+import searchIcon from './../images/search_FILL0_wght700_GRAD200_opsz48.svg';
+import './../stylesheets/WordSearchHome.css';
 import axios from 'axios';
+import { Form, redirect } from "react-router-dom";
+
+const wordSearchHomeLoader = ({ request }) => {
+   let url = new URL(request.url);
+   let searchTerm = url.searchParams.get('wordSearch');
+   console.log(searchTerm);
+   if (searchTerm == null) return null;
+   else return redirect(`/${searchTerm}`);
+};
 
 class WordSearchHome extends Component {
 
@@ -19,20 +28,22 @@ class WordSearchHome extends Component {
       this.setState({value: event.target.value});
    }
 
+   
    handleSubmit(event) {
-      event.preventDefault();
+      /* event.preventDefault();
       this.axiosConfig.get('/get-lexicographic-data/', {
 	 params: {
 	    word: this.state.value
 	 }
-      });
+      }); */
    }
 
    render() {
+
       return (
 	 <header className="header vertical-flex">
 	    <h1 className="heading-1">A Dictionary of the English Language</h1>
-	    <form acceptCharset="utf-8" 
+	    <Form acceptCharset="utf-8" 
 	       autoCapitalize="none" 
 	       autoComplete="off" 
 	       method="get"
@@ -47,6 +58,7 @@ class WordSearchHome extends Component {
 		  <input className="search-button-box search-box"
 		     type="text" 
 		     id="dictionarySearch"
+		     name="wordSearch"
 		     value={this.state.value}
 		     onChange={this.handleChange}
 		  />
@@ -56,10 +68,10 @@ class WordSearchHome extends Component {
 		     type="image" 
 		  />
 	       </div>
-	    </form>
+	    </Form>
 	 </header>
       );
    }
 }
 
-export default WordSearchHome;
+export { WordSearchHome as default, wordSearchHomeLoader };
