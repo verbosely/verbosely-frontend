@@ -1,0 +1,21 @@
+.horizontal-flex {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+}
+
+.search-button-box {
+   height: 8vh;
+}
+
+.search-box {
+   width: 50vw;
+}
+
+.label {
+   color: goldenrod;
+   font-size: 7vmin;
+}
+
