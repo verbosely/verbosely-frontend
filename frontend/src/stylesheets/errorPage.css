@@ -1,0 +1,10 @@
+p {
+   color: rgb(229, 140, 24);
+   font-size: 5vmin;
+   margin: 0;
+}
+
+strong {
+   font-weight: 1000;
+   color: rgb(220, 10, 10);
+}

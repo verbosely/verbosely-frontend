@@ -2,14 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import './index.css';
-import WordSearchHome, { wordSearchHomeLoader } from './pages/WordSearchHome';
+import './stylesheets/wordSearchHome.css';
+import './stylesheets/errorPage.css';
+import WordSearchHome, { wordSearchHomeLoader } from './pages/wordSearchHome';
 import reportWebVitals from './reportWebVitals';
+import ErrorPage from './pages/errorPage';
 
 const router = createBrowserRouter([
    {
       path: "/",
       element: <WordSearchHome />,
-      loader: wordSearchHomeLoader
+      id: "root",
+      loader: wordSearchHomeLoader,
+      errorElement: <ErrorPage />
    },
 ]);
 
