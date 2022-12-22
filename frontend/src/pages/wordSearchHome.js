@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import searchIcon from './../images/search_FILL0_wght700_GRAD200_opsz48.svg';
-import './../stylesheets/WordSearchHome.css';
 import axios from 'axios';
 import { Form, redirect } from "react-router-dom";
 
