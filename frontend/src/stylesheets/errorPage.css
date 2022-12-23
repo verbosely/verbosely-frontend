@@ -8,3 +8,8 @@ strong {
    font-weight: 1000;
    color: rgb(220, 10, 10);
 }
+
+a {
+   color: rgb(63, 33, 212);
+   font-weight: 1000;
+}
