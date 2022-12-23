@@ -11,7 +11,14 @@ export default function ErrorPage() {
 	       <h1 className="heading-1">HTTP Response Status Code 404</h1>
 	       <p className="paragraph">
 		  <strong>Requested Resource Not Found</strong><br /><br />
-		  {`"${error.data.match(/(?<=\/).*(?=")/)}" is either not in `}<Link to='.'>Webster's New International Dictionary of the English Language</Link>{`, or its lexicographic data has not been curated yet.`}
+		  "{error.data.match(/(?<=\/).*/)[0].slice(0, -1)}" is either not in&nbsp;
+		  <Link 
+		     to='.' 
+		     draggable='false'
+		  >
+		     Webster's New International Dictionary of the English Language
+		  </Link>
+		  , or its lexicographic data has not been curated yet.
 	       </p>
 	    </>
 	 }
