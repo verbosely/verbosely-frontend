@@ -11,7 +11,7 @@ export default function ErrorPage() {
 	       <h1 className="heading-1">HTTP Response Status Code 404</h1>
 	       <p className="paragraph">
 		  <strong>Requested Resource Not Found</strong><br /><br />
-		  "{error.data.match(/(?<=\/).*/)[0].slice(0, -1)}" is either not in&nbsp;
+		  "{error.data.match(/(?:\/).*/)[0].slice(1, -1)}" is either not in&nbsp;
 		  <Link 
 		     to='.' 
 		     draggable='false'
