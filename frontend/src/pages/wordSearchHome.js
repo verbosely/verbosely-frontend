@@ -16,7 +16,7 @@ class WordSearchHome extends Component {
    constructor(props) {
       super(props);
       this.axiosConfig = axios.create({
-	 baseURL: 'http://127.0.0.1'
+	 baseURL: 'http://127.0.0.1' //Public IPv4 address
       });
       this.state = {value: ''};
       this.handleChange = this.handleChange.bind(this);
