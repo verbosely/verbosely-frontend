@@ -1,43 +1,65 @@
 import React, { Component } from 'react';
 import searchIcon from './../images/search_FILL0_wght700_GRAD200_opsz48.svg';
 import axios from 'axios';
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect } from 'react-router-dom';
+import QueryCleaner from './../classes/queryCleaner';
 
-const wordSearchHomeLoader = ({ request }) => {
+const axiosConfig = axios.create({
+   // Replace value of baseURL with public IPv4 address during production.
+   baseURL: 'http://127.0.0.1'
+});
+      
+const getLexicographicData = (word) => {
+   return axiosConfig.get('/get-lexicographic-data/', {
+      params: {
+	 word: word
+      }
+   });
+};
+
+const wordSearchHomeLoader = async ({ request }) => {
    let url = new URL(request.url);
    let searchTerm = url.searchParams.get('wordSearch');
+  
+   // If searchTerm is not null, undefined, or an empty string, then the 
+   // body of the if-statement is executed.
+   if (searchTerm) {
+
+      // Instantiate a QueryCleaner object to evaluate and clean
+      // searchTerm.
+      const queryCleaner = new QueryCleaner(searchTerm);
+
+      // Remove all white space characters from searchTerm.
+      if (queryCleaner.hasWhiteSpace()) searchTerm = queryCleaner.removeWhiteSpace();
+      
+      // If searchTerm is not an empty string after cleaning, then send
+      // a GET HTTP request to the server to retrieve lexicographic data
+      // for the user-inputted search parameter of the URL.
+      if (searchTerm) {
+	 const response = await getLexicographicData(searchTerm);
+	 console.log(response);
+      };
+   };
+
    console.log(searchTerm);
-   if (searchTerm == null) return null;
-   else return redirect(`/${searchTerm}`);
+   return null;
+   //if (searchTerm == null) return null;
+   //else return redirect(`/${searchTerm}`);
 };
 
 class WordSearchHome extends Component {
 
    constructor(props) {
       super(props);
-      this.axiosConfig = axios.create({
-	 baseURL: 'http://127.0.0.1' //Public IPv4 address
-      });
       this.state = {value: ''};
       this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
    }
 
    handleChange(event) {
       this.setState({value: event.target.value});
    }
 
-   
-   handleSubmit(event) {
-      /* event.preventDefault();
-      this.axiosConfig.get('/get-lexicographic-data/', {
-	 params: {
-	    word: this.state.value
-	 }
-      }); */
-   }
-
-   render() {
+  render() {
 
       return (
 	 <header className="header vertical-flex">
@@ -46,7 +68,6 @@ class WordSearchHome extends Component {
 	       autoCapitalize="none" 
 	       autoComplete="off" 
 	       method="get"
-	       onSubmit={this.handleSubmit}
 	    >
 	       <label className="label" 
 		  htmlFor="dictionarySearch"
