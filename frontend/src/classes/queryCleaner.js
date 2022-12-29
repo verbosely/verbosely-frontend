@@ -9,8 +9,15 @@ class QueryCleaner {
    }
 
    removeWhiteSpace() {
-      return this.query.replace(/\s/g, '');
+      this.query = this.query.replace(/\s/g, '');
+      return this.query;
    }
+
+   hasProperLength() {
+      if (this.query.length < 40) return true;
+      else return false;
+   }
+
 }
 
 export default QueryCleaner;

@@ -32,10 +32,11 @@ const wordSearchHomeLoader = async ({ request }) => {
       // Remove all white space characters from searchTerm.
       if (queryCleaner.hasWhiteSpace()) searchTerm = queryCleaner.removeWhiteSpace();
       
-      // If searchTerm is not an empty string after cleaning, then send
-      // a GET HTTP request to the server to retrieve lexicographic data
-      // for the user-inputted search parameter of the URL.
-      if (searchTerm) {
+      // If searchTerm is not an empty string after cleaning and it has
+      // proper length, then send a GET HTTP request to the server to 
+      // retrieve lexicographic data for the user-inputted search parameter 
+      // of the URL.
+      if (searchTerm && queryCleaner.hasProperLength()) {
 	 const response = await getLexicographicData(searchTerm);
 	 console.log(response);
       };
