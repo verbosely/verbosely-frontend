@@ -2,22 +2,24 @@
 from mongoengine import * 
 
 class Orthoepy(EmbeddedDocument):
-    singular = ListField(StringField())
     plural = ListField(StringField())
+    singular = ListField(StringField())
 
 class BaseWordDocument(Document):
-    main_vocab = BooleanField()
-    minor_vocab = BooleanField()
-    part_of_speech = StringField()
-    orthography = DictField()
-    orthoepy = EmbeddedDocumentField(Orthoepy)
-    meanings = DictField()
     abbreviations = DictField()
-    hyperlinks = DictField()
-    transliterations = DictField()
-    italics = DictField()
     bold = DictField()
+    capital_required = DictField()
+    cross_references = DictField()
+    italics = DictField()
+    main_vocab = BooleanField()
+    meanings = DictField()
     meta = {'abstract': True}
+    minor_vocab = BooleanField()
+    orthoepy = EmbeddedDocumentField(Orthoepy)
+    orthography = DictField()
+    part_of_speech = StringField()
+    subjects = DictField()
+    transliterations = DictField()
 
 class A(BaseWordDocument):
     collection = "a"
