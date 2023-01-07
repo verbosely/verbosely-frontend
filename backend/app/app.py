@@ -9,10 +9,11 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
+db_name = 'wnidel'
 socket_path = '/tmp/mongodb-27017.sock'
 uri = 'mongodb://%s' % (quote_plus(socket_path))
 client = MongoClient(uri, document_class=RawBSONDocument)
-db = client.wnidel
+db = client[db_name]
 
 collections = db.list_collection_names()
 
@@ -21,9 +22,10 @@ def get_lexicographic_data():
     print(request.args['word'])
     
     if len(request.args['word']) == 1:
-        if request.args['word'] in collections:
+        collection = request.args['word']
+        if collection in collections:
             documents = []
-            for document in db[request.args['word']].find():
+            for document in db[collection].find():
                 documents.append(bsonjs.dumps(document.raw))
             return documents 
         else:
