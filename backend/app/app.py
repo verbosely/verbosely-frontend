@@ -1,5 +1,5 @@
 # Import third-party modules, classes, and functions
-from flask import Flask, make_response
+from flask import Flask, jsonify, request
 from flask_mongoengine import MongoEngine
 
 # Import local modules, classes, and functions
@@ -19,12 +19,13 @@ app.config["MONGODB_SETTINGS"] = [
 db = MongoEngine()
 db.init_app(app)
 
-@app.route("/")
-def test():
-    return "<p>apples.</p>"
-
 @app.route('/get-lexicographic-data/', methods=['GET'])
 def get_lexicographic_data():
-    #response = make_response()
-    #print(response.status)
-    return {}
+    print(request.args['word'])
+    documents = A.objects(orthography__singular__iexact =
+    request.args['word'])
+    
+    if len(documents):
+        return jsonify(documents)
+    else:
+        return {}, 404, {'Access-Control-Allow-Origin': '*'}
