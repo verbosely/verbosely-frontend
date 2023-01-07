@@ -1,31 +1,30 @@
-# Import third-party modules, classes, and functions
-from flask import Flask, jsonify, request
-from flask_mongoengine import MongoEngine
+# Import standard modules, classes, and functions
+from urllib.parse import quote_plus
 
-# Import local modules, classes, and functions
-from models import *
+# Import third-party modules, classes, and functions
+import bsonjs
+from bson.raw_bson import RawBSONDocument
+from flask import Flask, request
+from pymongo import MongoClient
 
 app = Flask(__name__)
 
-app.config["MONGODB_SETTINGS"] = [
-        {
-            "db": "wnidel",
-            "host": "localhost",
-            "port": 27017,
-            "alias": "default",
-        }
-]
+socket_path = '/tmp/mongodb-27017.sock'
+uri = 'mongodb://%s' % (quote_plus(socket_path))
+client = MongoClient(uri, document_class=RawBSONDocument)
+db = client.wnidel
 
-db = MongoEngine()
-db.init_app(app)
+collections = db.list_collection_names()
 
 @app.route('/get-lexicographic-data/', methods=['GET'])
 def get_lexicographic_data():
     print(request.args['word'])
-    documents = A.objects(orthography__singular__iexact =
-    request.args['word'])
     
-    if len(documents):
-        return jsonify(documents)
-    else:
-        return {}, 404, {'Access-Control-Allow-Origin': '*'}
+    if len(request.args['word']) == 1:
+        if request.args['word'] in collections:
+            documents = []
+            for document in db[request.args['word']].find():
+                documents.append(bsonjs.dumps(document.raw))
+            return documents 
+        else:
+            return {}, 404, {'Access-Control-Allow-Origin': '*'}
