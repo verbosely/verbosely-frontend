@@ -7,6 +7,7 @@ import './stylesheets/errorPage.css';
 import WordSearchHome, { wordSearchHomeLoader } from './pages/wordSearchHome';
 import reportWebVitals from './reportWebVitals';
 import ErrorPage from './pages/errorPage';
+import WordData from './pages/wordData';
 
 const router = createBrowserRouter([
    {
@@ -14,7 +15,13 @@ const router = createBrowserRouter([
       element: <WordSearchHome />,
       id: "root",
       loader: wordSearchHomeLoader,
-      errorElement: <ErrorPage />
+      errorElement: <ErrorPage />,
+      children: [
+	 {
+	    path: ":word",
+	    element: <WordData />,
+	 },
+      ],
    },
 ]);
 
