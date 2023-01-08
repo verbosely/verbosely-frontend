@@ -23,10 +23,13 @@ def get_lexicographic_data():
     
     if len(request.args['word']) == 1:
         collection = request.args['word']
-        if collection in collections:
-            documents = []
-            for document in db[collection].find():
-                documents.append(bsonjs.dumps(document.raw))
-            return documents 
-        else:
-            return {}, 404, {'Access-Control-Allow-Origin': '*'}
+    else:
+        collection = request.args['word'][:2]
+
+    if collection in collections:
+        documents = []
+        for document in db[collection].find():
+            documents.append(bsonjs.dumps(document.raw))
+        return documents 
+    else:
+        return {}, 404, {'Access-Control-Allow-Origin': '*'}
