@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import searchIcon from './../images/search_FILL0_wght700_GRAD200_opsz48.svg';
 import axios from 'axios';
-import { Form, redirect } from 'react-router-dom';
+import { Form, Outlet, redirect } from 'react-router-dom';
 import QueryCleaner from './../classes/queryCleaner';
 
 const axiosConfig = axios.create({
@@ -37,15 +37,15 @@ const wordSearchHomeLoader = async ({ request }) => {
       // retrieve lexicographic data for the user-inputted search parameter 
       // of the URL.
       if (searchTerm && queryCleaner.hasProperLength()) {
-	 const response = await getLexicographicData(searchTerm);
-	 console.log(response);
+	 try{
+	    const response = await getLexicographicData(searchTerm);
+	    return redirect(`${searchTerm}`);  
+	 } catch (error) {
+	    return redirect(`${searchTerm}/${error.response.status}`);
+	 }
       };
-   };
+   } else return null;
 
-   console.log(searchTerm);
-   return null;
-   //if (searchTerm == null) return null;
-   //else return redirect(`/${searchTerm}`);
 };
 
 class WordSearchHome extends Component {
@@ -63,34 +63,37 @@ class WordSearchHome extends Component {
   render() {
 
       return (
-	 <header className="header vertical-flex">
-	    <h1 className="heading-1">A Dictionary of the English Language</h1>
-	    <Form acceptCharset="utf-8" 
-	       autoCapitalize="none" 
-	       autoComplete="off" 
-	       method="get"
-	    >
-	       <label className="label" 
-		  htmlFor="dictionarySearch"
+	 <>
+	    <header className="header vertical-flex">
+	       <h1 className="heading-1">A Dictionary of the English Language</h1>
+	       <Form acceptCharset="utf-8" 
+		  autoCapitalize="none" 
+		  autoComplete="off" 
+		  method="get"
 	       >
-		  Search for a Word
-	       </label>
-	       <div className="horizontal-flex">
-		  <input className="search-button-box search-box"
-		     type="text" 
-		     id="dictionarySearch"
-		     name="wordSearch"
-		     value={this.state.value}
-		     onChange={this.handleChange}
-		  />
-		  <input className="search-button-box"
-		     alt="Get lexicographic data" 
-		     src={searchIcon} 
-		     type="image" 
-		  />
-	       </div>
-	    </Form>
-	 </header>
+		  <label className="label" 
+		     htmlFor="dictionarySearch"
+		  >
+		     Search for a Word
+		  </label>
+		  <div className="horizontal-flex">
+		     <input className="search-button-box search-box"
+			type="text" 
+			id="dictionarySearch"
+			name="wordSearch"
+			value={this.state.value}
+			onChange={this.handleChange}
+		     />
+		     <input className="search-button-box"
+			alt="Get lexicographic data" 
+			src={searchIcon} 
+			type="image" 
+		     />
+		  </div>
+	       </Form>
+	    </header>
+	    <Outlet />
+	 </>
       );
    }
 }
