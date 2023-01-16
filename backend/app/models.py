@@ -6,23 +6,22 @@ class Orthoepy(EmbeddedDocument):
     plural = ListField(StringField())
     singular = ListField(StringField())
 
-class Orthography(EmbeddedDocument):
-    plural = ListField(StringField())
-    singular = ListField(StringField())
-
 class BaseWordDocument(flask_mongoengine.Document):
     abbreviations = DictField()
     bold = DictField()
     capital_required = DictField()
     cross_references = DictField()
+    exclusiveness = DictField()
     italics = DictField()
+    quotations = DictField()
     main_vocab = BooleanField()
     meanings = DictField()
     meta = {'abstract': True}
     minor_vocab = BooleanField()
     orthoepy = EmbeddedDocumentField(Orthoepy)
-    orthography = EmbeddedDocumentField(Orthography)
+    orthography = DictField()
     part_of_speech = StringField()
+    phrases = DictField()
     subjects = DictField()
     transliterations = DictField()
 
