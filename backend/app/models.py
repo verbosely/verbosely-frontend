@@ -2,10 +2,6 @@
 import flask_mongoengine
 from mongoengine import *
 
-class Orthoepy(EmbeddedDocument):
-    plural = ListField(StringField())
-    singular = ListField(StringField())
-
 class BaseWordDocument(flask_mongoengine.Document):
     abbreviations = DictField()
     bold = DictField()
@@ -18,7 +14,7 @@ class BaseWordDocument(flask_mongoengine.Document):
     meanings = DictField()
     meta = {'abstract': True}
     minor_vocab = BooleanField()
-    orthoepy = EmbeddedDocumentField(Orthoepy)
+    orthoepy = DictField()
     orthography = DictField()
     part_of_speech = StringField()
     phrases = DictField()
