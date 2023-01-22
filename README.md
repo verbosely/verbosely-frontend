@@ -27,10 +27,14 @@ currently being granted.
 ## Technology Stack
 
 ### Host:
-* Amazon Web Services
-   * Elastic Compute Cloud (EC2)
-      * Amazon Machine Image: Ubuntu 20.04.5 LTS
-      * Region: US East (Ohio)
+   * Amazon Web Services
+      * Elastic Compute Cloud (EC2)
+	 * Amazon Machine Image: Ubuntu 20.04.5 LTS
+	 * Region: US East (Ohio)
+
+### Development OS:
+   * Linux
+      * Ubuntu 22.04.1 LTS
 
 ### Frontend Toolchain:
    * Create React App
