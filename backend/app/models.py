@@ -8,8 +8,8 @@ class BaseWordDocument(flask_mongoengine.Document):
     capital_required = DictField()
     cross_references = DictField()
     exclusiveness = DictField()
+    inline_audio = DictField()
     italics = DictField()
-    quotations = DictField()
     main_vocab = BooleanField()
     meanings = DictField()
     meta = {'abstract': True}
@@ -18,6 +18,7 @@ class BaseWordDocument(flask_mongoengine.Document):
     orthography = DictField()
     part_of_speech = StringField()
     phrases = DictField()
+    quotations = DictField()
     subjects = DictField()
     transliterations = DictField()
 
