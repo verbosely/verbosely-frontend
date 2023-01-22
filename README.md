@@ -31,10 +31,15 @@ currently being granted.
    * Elastic Compute Cloud (EC2)
       * Amazon Machine Image: Ubuntu 20.04.5 LTS
       * Region: US East (Ohio)
+      * Storage: SSD-based EBS volumes
 
 ### Development OS:
 * Linux
    * Ubuntu 22.04.1 LTS
+
+### Databases:
+* MongoDB Community Edition 6.0.3 (for textual data)
+* XFS File System (for audio files)
 
 ### Frontend Toolchain:
 * Create React App
