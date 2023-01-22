@@ -30,3 +30,12 @@ currently being granted.
 * Amazon Web Services
    * Elastic Compute Cloud (EC2)
       * Ohio
+
+### Frontend Toolchain:
+   * Create React App
+      * React
+      * Babel
+      * webpack
+      * ESLint
+      * Jest
+      * PostCSS
