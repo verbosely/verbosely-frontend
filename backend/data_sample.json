@@ -1,0 +1,623 @@
+{
+  "_id": {
+    "$oid": "63b518780dab09db9c36e243"
+  },
+  "main_vocab": true,
+  "orthography": {
+    "plural": {
+      "preferred": [
+        "A's"
+      ],
+      "alternatives": [
+        "As"
+      ]
+    },
+    "singular": [
+      "A"
+    ]
+  },
+  "meanings": {
+    "meaning_1": "The first letter of the English alphabet, and of most of the cognate alphabets. The A of the English and allied alphabets, as also the small form, \"a,\" besides the forms in Italic, black letter, etc., come from the Latin A, corresponding to the Greek Alpha, which had the same form as, and which came in turn from, Aleph (\"ox\"), the first letter of the Phœnician and old Hebrew alphabets. The Aleph was a letter of consonantal character, with a guttural breath sound, to which the various vowel sounds might be attached. The Greeks took it to represent the pure vowel sound (ä) of their Alpha. In English, various sounds are now represented by this letter (see Guide to Pron., § 112). Originally it had in our language, as it still has for the most part in the languages of continental Europe, the sound of \"Italian a\" (ä). The \"long a,\" as in fate, is a comparatively modern sound of \"a\" which has developed from the earlier ä. See ALPHABET, Illust.",
+    "meaning_2": {
+      "meaning": "As a symbol, used to denote or indicate:",
+      "a": "First in order or class, or sometimes the numeral 1; as, company A; quire a; the dominical letter A.",
+      "b": {
+        "1": "The sixth tone in the model major scale (that of C), or the first of its relative minor scale. The second string of the violin is tuned to the A in the treble staff.",
+        "2": "In notation, any symbol representing this tone, as a note on a certain line or space of a staff. See CLEF, Illust.",
+        "3": "On a keyboard, any key giving this tone. See KEYBOARD, Illust."
+      },
+      "c": "The symbol used for the universal affirmative proposition; as, \"All men are mortal\" is an A proposition.",
+      "d": "Any one arbitrarily or conveniently so designated, as for purposes of argument; as, A deeded Blackacre to B.",
+      "e": "A known quantity (which see).",
+      "f": "The front of the leaf (in a book in which the leaves, instead of the pages, are numbered).",
+      "g": "A prominent Fraunhofer line caused by terrestrial oxygen.",
+      "h": "Assented stock; --used on the tape of stock tickers.",
+      "i": "In medieval Roman numerals, 50 or 500, or, in the form Ā, 5000."
+    },
+    "meaning_3": {
+      "meaning": "As an abbreviation:",
+      "a": "In the form A.: Various proper names, as Alfred, Anna, etc.; Absolute (as, 10° A. temperature); Absolvo, Lat. for, I absolve, acquit; Adulteress (a woman convicted of adultery being at one time compelled to wear a scarlet letter \"A\" as a badge of infamy, probably in allusion to the scarlet woman of Revelation); America, American; Antiquo, Lat. for, the old law (used on ballots among the Romans to signify a negative vote).",
+      "b": "In the form a. or A.: accepted; acre; acting; active; ad, Lat. for \"at\" or for \"to\", usually written @; adjective; after; afternoon; aged; alto; amateur; ampere; (written ā or a͞a͞) ana; ana-; and; anno, Lat. for, in the year; annus, Lat. for, year; anode; anonymous; answer; ante; approved; are; argent; [without period, A] argon; artillery; assist; asymmetric."
+    }
+  },
+  "abbreviations": {
+    "1": {
+      "string": "etc.",
+      "start_index": {
+        "meaning_1": [
+          195
+        ],
+        "meaning_3": {
+          "a": [
+            55
+          ]
+        }
+      }
+    },
+    "2": {
+      "string": "Pron.",
+      "start_index": {
+        "meaning_1": [
+          670
+        ]
+      }
+    },
+    "3": {
+      "string": "Illust.",
+      "start_index": {
+        "meaning_1": [
+          943
+        ],
+        "meaning_2": {
+          "b": {
+            "2": [
+              107
+            ],
+            "3": [
+              55
+            ]
+          }
+        }
+      }
+    },
+    "4": {
+      "string": "A.",
+      "start_index": {
+        "meaning_3": {
+          "a": [
+            12,
+            79
+          ],
+          "b": [
+            18
+          ]
+        }
+      }
+    },
+    "5": {
+      "string": "Lat.",
+      "start_index": {
+        "meaning_3": {
+          "a": [
+            105,
+            343
+          ],
+          "b": [
+            58,
+            204,
+            234
+          ]
+        }
+      }
+    },
+    "6": {
+      "string": "a.",
+      "start_index": {
+        "meaning_3": {
+          "b": [
+            12
+          ]
+        }
+      }
+    },
+    "7": {
+      "string": "A",
+      "start_index": {
+        "meaning_3": {
+          "b": [
+            322
+          ]
+        }
+      }
+    },
+    "8": {
+      "string": "Cf.",
+      "start_index": {
+        "phrases": {
+          "6": {
+            "meaning": [
+              23
+            ]
+          }
+        }
+      }
+    }
+  },
+  "transliterations": {
+    "1": {
+      "string": "Aleph",
+      "start_index": {
+        "meaning_1": [
+          315,
+          393
+        ]
+      }
+    },
+    "2": {
+      "string": "Alpha",
+      "start_index": {
+        "meaning_1": [
+          251,
+          587
+        ]
+      }
+    }
+  },
+  "italics": {
+    "1": {
+      "string": "Guide to Pron.",
+      "start_index": {
+        "meaning_1": [
+          661
+        ]
+      }
+    },
+    "2": {
+      "string": "Illust.",
+      "start_index": {
+        "meaning_1": [
+          943
+        ],
+        "meaning_2": {
+          "b": {
+            "2": [
+              107
+            ],
+            "3": [
+              55
+            ]
+          }
+        }
+      }
+    },
+    "3": {
+      "string": "fate",
+      "start_index": {
+        "meaning_1": [
+          844
+        ]
+      }
+    },
+    "4": {
+      "string": "symbol",
+      "start_index": {
+        "meaning_2": {
+          "meaning": [
+            5
+          ]
+        }
+      }
+    },
+    "5": {
+      "string": "A",
+      "start_index": {
+        "meaning_2": {
+          "a": [
+            65,
+            98
+          ],
+          "c": [
+            90
+          ],
+          "d": [
+            84
+          ]
+        }
+      }
+    },
+    "6": {
+      "string": "a",
+      "start_index": {
+        "meaning_2": {
+          "a": [
+            74
+          ]
+        }
+      }
+    },
+    "7": {
+      "string": "abbreviation",
+      "start_index": {
+        "meaning_3": {
+          "meaning": [
+            6
+          ]
+        }
+      }
+    },
+    "8": {
+      "string": "A.",
+      "start_index": {
+        "meaning_3": {
+          "a": [
+            79
+          ]
+        }
+      }
+    }
+  },
+  "bold": {
+    "1": {
+      "string": "A.",
+      "start_index": {
+        "meaning_3": {
+          "a": [
+            12
+          ],
+          "b": [
+            18
+          ]
+        }
+      }
+    },
+    "2": {
+      "string": "a.",
+      "start_index": {
+        "meaning_3": {
+          "b": [
+            12
+          ]
+        }
+      }
+    }
+  },
+  "orthoepy": {
+    "singular": {
+      "respelling": [
+        "ā"
+      ],
+      "audio": "dictionary/a/singular.m4a"
+    },
+    "plural": {
+      "respelling": "āz",
+      "audio": "dictionary/a/plural.m4a"
+    }
+  },
+  "cross_references": {
+    "1": {
+      "string": "ALPHABET, Illust.",
+      "url": "",
+      "start_index": {
+        "meaning_1": [
+          933
+        ]
+      }
+    },
+    "2": {
+      "string": "Guide to Pron., § 112",
+      "url": "",
+      "start_index": {
+        "meaning_1": [
+          661
+        ]
+      }
+    },
+    "3": {
+      "string": "CLEF, Illust.",
+      "url": "",
+      "start_index": {
+        "meaning_2": {
+          "b": {
+            "2": [
+              101
+            ]
+          }
+        }
+      }
+    },
+    "4": {
+      "string": "KEYBOARD, Illust.",
+      "url": "",
+      "start_index": {
+        "meaning_2": {
+          "b": {
+            "3": [
+              45
+            ]
+          }
+        }
+      }
+    },
+    "5": {
+      "string": "Cf. B STOCK",
+      "url": "",
+      "start_index": {
+        "phrases": {
+          "6": {
+            "meaning": [
+              23
+            ]
+          }
+        }
+      }
+    }
+  },
+  "subjects": {
+    "music": {
+      "meaning_2": [
+        "b"
+      ],
+      "phrases": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "logic": {
+      "meaning_2": [
+        "c"
+      ]
+    },
+    "algebra": {
+      "meaning_2": [
+        "e"
+      ]
+    },
+    "astronomy": {
+      "meaning_2": [
+        "g"
+      ]
+    },
+    "etc": {
+      "meaning_2": [
+        "e"
+      ]
+    },
+    "physics": {
+      "meaning_3": {
+        "a": {
+          "1": {
+            "string": "Absolute (as, 10° A. temperature)",
+            "start_index": [
+              61
+            ]
+          }
+        }
+      }
+    },
+    "roman_law": {
+      "meaning_3": {
+        "a": {
+          "1": {
+            "string": "Absolvo, Lat. for, I absolve, acquit",
+            "start_index": [
+              96
+            ]
+          }
+        }
+      }
+    },
+    "commerce": {
+      "meaning_3": {
+        "b": {
+          "2": {
+            "string": "ad, Lat. for \"at\" or for \"to\", usually written @",
+            "start_index": [
+              54
+            ]
+          },
+          "1": {
+            "string": "accepted",
+            "start_index": [
+              22
+            ]
+          },
+          "3": {
+            "string": "approved",
+            "start_index": [
+              282
+            ]
+          }
+        }
+      }
+    },
+    "electricity": {
+      "meaning_3": {
+        "b": {
+          "1": {
+            "string": "ampere",
+            "start_index": [
+              154
+            ]
+          },
+          "2": {
+            "string": "anode",
+            "start_index": [
+              250
+            ]
+          }
+        }
+      }
+    },
+    "medicine": {
+      "meaning_3": {
+        "b": {
+          "1": {
+            "string": "(written ā or a͞a͞) ana",
+            "start_index": [
+              162
+            ]
+          }
+        }
+      }
+    },
+    "organic_chemistry": {
+      "meaning_3": {
+        "b": {
+          "1": {
+            "string": "ana-",
+            "start_index": [
+              187
+            ]
+          },
+          "2": {
+            "string": "asymmetric",
+            "start_index": [
+              351
+            ]
+          }
+        }
+      }
+    },
+    "metric_system": {
+      "meaning_3": {
+        "b": {
+          "1": {
+            "string": "are",
+            "start_index": [
+              292
+            ]
+          }
+        }
+      }
+    },
+    "heraldry": {
+      "meaning_3": {
+        "b": {
+          "1": {
+            "string": "argent",
+            "start_index": [
+              297
+            ]
+          }
+        }
+      }
+    },
+    "chemistry": {
+      "meaning_3": {
+        "b": {
+          "1": {
+            "string": "[without period, A] argon",
+            "start_index": [
+              305
+            ]
+          }
+        }
+      }
+    },
+    "baseball": {
+      "meaning_3": {
+        "b": {
+          "1": {
+            "string": "assist",
+            "start_index": [
+              343
+            ]
+          }
+        }
+      }
+    },
+    "finance": {
+      "phrases": [
+        6
+      ]
+    }
+  },
+  "capital_required": {
+    "meaning_2": [
+      "c",
+      "d",
+      "g",
+      "h",
+      "i"
+    ]
+  },
+  "quotations": {
+    "1": {
+      "string": "scarlet woman",
+      "start_index": {
+        "meaning_3": {
+          "a": [
+            283
+          ]
+        }
+      },
+      "source": {
+        "book": {
+          "title": "Revelation",
+          "italicize": false,
+          "start_index": {
+            "meaning_3": {
+              "a": [
+                300
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "phrases": {
+    "1": {
+      "phrase": "A flat",
+      "meaning": "The tone (A♭) a half step below A."
+    },
+    "2": {
+      "phrase": "A flat major",
+      "meaning": "The major scale or key having the signature of four flats."
+    },
+    "3": {
+      "phrase": "A major",
+      "meaning": "The major scale or key having the signature of three sharps."
+    },
+    "4": {
+      "phrase": "A minor",
+      "meaning": "The minor scale or key relative to C major, and having the same signature without sharps or flats."
+    },
+    "5": {
+      "phrase": "A sharp",
+      "meaning": "The tone (A♯) a half step above A."
+    },
+    "6": {
+      "phrase": "A stock",
+      "meaning": "Deferred common stock. Cf. B STOCK."
+    }
+  },
+  "exclusiveness": {
+    "phrases": {
+      "6": {
+        "locations": [
+          "England"
+        ],
+        "events": [
+          "Stock Brokers' Cant"
+        ]
+      }
+    }
+  },
+  "inline_audio": {
+    "1": {
+      "string": "ä",
+      "start_index": {
+        "meaning_1": [
+          575,
+          820,
+          926
+        ]
+      },
+      "audio": "phonemes/latin_small_a_with_diaeresis.m4a"
+    }
+  }
+}
