@@ -38,8 +38,15 @@ currently being granted.
    * Ubuntu 22.04.1 LTS
 
 ### Databases:
-* MongoDB Community Edition 6.0.3 (for textual data)
-* XFS File System (for audio files)
+* MongoDB Community Edition 6.0.3
+   * Lexicographic data
+
+### File Systems:
+* ext4
+   * source code
+* XFS
+   * audio files
+   * MongoDB WiredTiger files
 
 ### Frontend Toolchain:
 * Create React App
