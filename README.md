@@ -29,7 +29,8 @@ currently being granted.
 ### Host:
 * Amazon Web Services
    * Elastic Compute Cloud (EC2)
-      * Ohio
+      * Amazon Machine Image: Ubuntu 20.04.5 LTS
+      * Region: US East (Ohio)
 
 ### Frontend Toolchain:
    * Create React App
