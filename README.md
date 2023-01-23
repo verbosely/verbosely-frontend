@@ -37,6 +37,10 @@ currently being granted.
 * Linux
    * Ubuntu 22.04.1 LTS
 
+### Web Servers:
+* nginx
+* Gunicorn
+
 ### Databases:
 * MongoDB Community Edition 6.0.3
    * [Lexicographic data](/backend/data_sample.json)
