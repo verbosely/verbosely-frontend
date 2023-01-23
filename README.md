@@ -37,13 +37,6 @@ currently being granted.
 * Linux
    * Ubuntu 22.04.1 LTS
 
-### File Systems:
-* ext4
-   * source code
-* XFS
-   * audio files
-   * MongoDB WiredTiger files
-
 ### Frontend:
 #### Toolchain:
 * Create React App
@@ -58,8 +51,14 @@ currently being granted.
 #### Web Servers:
 * nginx
 * Gunicorn
-#### Databases:
+#### Database:
 * MongoDB Community Edition 6.0.3
    * [Lexicographic data](/backend/data_sample.json)
+#### File Systems:
+* ext4
+   * source code
+* XFS
+   * audio files
+   * MongoDB WiredTiger files
 #### Web Framework:
 * Flask
