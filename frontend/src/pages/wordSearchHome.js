@@ -5,8 +5,8 @@ import { Form, Outlet, redirect } from 'react-router-dom';
 import QueryCleaner from './../classes/queryCleaner';
 
 const axiosConfig = axios.create({
-   // Replace value of baseURL with public IPv4 address during production.
-   baseURL: 'http://127.0.0.1'
+   // Get public IPv4 address from .env file.
+   baseURL: `http://${process.env.REACT_APP_PUBLIC_IPV4}`
 });
       
 const getLexicographicData = (word) => {
