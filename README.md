@@ -37,10 +37,6 @@ currently being granted.
 * Linux
    * Ubuntu 22.04.1 LTS
 
-### Databases:
-* MongoDB Community Edition 6.0.3
-   * [Lexicographic data](/backend/data_sample.json)
-
 ### File Systems:
 * ext4
    * source code
@@ -62,5 +58,8 @@ currently being granted.
 #### Web Servers:
 * nginx
 * Gunicorn
+#### Databases:
+* MongoDB Community Edition 6.0.3
+   * [Lexicographic data](/backend/data_sample.json)
 #### Web Framework:
 * Flask
