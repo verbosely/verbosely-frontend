@@ -39,7 +39,7 @@ currently being granted.
 
 ### Databases:
 * MongoDB Community Edition 6.0.3
-   * Lexicographic data
+   * [Lexicographic data](/backend/data_sample.json)
 
 ### File Systems:
 * ext4
