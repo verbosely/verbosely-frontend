@@ -62,3 +62,10 @@ currently being granted.
    * MongoDB WiredTiger files
 #### Web Framework:
 * Flask
+   * Werkzeug
+   * Jinja
+   * MarkupSafe
+   * ItsDangerous
+   * Click
+#### Application Language:
+* Python 3.11
