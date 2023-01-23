@@ -38,6 +38,10 @@ currently being granted.
    * Ubuntu 22.04.1 LTS
 
 ### Frontend:
+#### Languages:
+* ECMAScript 2015 (JavaScript)
+* HTML5
+* CSS
 #### Toolchain:
 * Create React App
    * React
