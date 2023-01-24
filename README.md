@@ -77,6 +77,10 @@ currently being granted.
 ## Linux Tools Used
 * Bash
 * Git
-* LVM2 suite (filesystem snapshots for MongoDB backups)
+   * for distributed version control
+* LVM2 suite 
+   * for creating XFS filesystem snapshots for MongoDB backups
 * OpenSSH suite
-* Vim (text editor)
+   * for public key authentication on GitHub and AWS EC2
+* Vim
+   * for text editing
