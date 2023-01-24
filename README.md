@@ -75,4 +75,8 @@ currently being granted.
 * Python 3.11
 
 ## Linux Tools Used
+* Bash
+* Git
 * LVM2 suite
+* OpenSSH suite
+* Vim
