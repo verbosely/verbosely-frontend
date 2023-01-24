@@ -77,6 +77,6 @@ currently being granted.
 ## Linux Tools Used
 * Bash
 * Git
-* LVM2 suite
+* LVM2 suite (filesystem snapshots for MongoDB backups)
 * OpenSSH suite
-* Vim
+* Vim (text editor)
