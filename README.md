@@ -74,5 +74,5 @@ currently being granted.
 #### Application Language:
 * Python 3.11
 
-## Linux Tools
+## Linux Tools Used
 * LVM2 suite
