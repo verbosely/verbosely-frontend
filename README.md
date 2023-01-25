@@ -79,7 +79,7 @@ currently being granted.
 * Git
    * for distributed version control
 * LVM2 suite 
-   * for creating XFS filesystem snapshots for MongoDB backups
+   * for creating file system snapshots for MongoDB backups
 * OpenSSH suite
    * for managing public-private key pairs (ssh-add, ssh-keygen)
    * for copying files securely via SFTP/SSH protocols (scp)
@@ -87,3 +87,7 @@ currently being granted.
      GitHub and AWS EC2 (ssh-agent)
 * Vim
    * for text editing
+* mkfs.xfs
+   * for creating XFS file systems
+* mount
+   * for attaching file systems to the Linux file hierarchy
