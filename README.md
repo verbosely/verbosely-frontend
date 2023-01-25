@@ -83,8 +83,7 @@ currently being granted.
 * OpenSSH suite
    * for managing public-private key pairs (ssh-add, ssh-keygen)
    * for copying files securely via SFTP/SSH protocols (scp)
-   * for adding private keys to agents for public key authentication on
-     GitHub and AWS EC2 (ssh-agent)
+   * for adding private keys to agents for public key authentication (ssh-agent)
 * Vim
    * for text editing
 * mkfs.xfs
