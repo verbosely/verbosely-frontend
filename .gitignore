@@ -1,3 +1,4 @@
 add_github_key
 deploying_to_aws_ec2
 backend/.venv
+backend/http_server/sites-enabled/update-sites-enabled.sh
