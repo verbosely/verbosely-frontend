@@ -51,9 +51,6 @@ class Orthography(EmbeddedDocument):
     singular_with_alternatives = EmbeddedDocumentField(OrthographyWithAlternatives)
     plural_with_alternatives = EmbeddedDocumentField(OrthographyWithAlternatives)
 
-class Test(EmbeddedDocument):
-    test_1 = StringField()
-
 class BaseWordDocument(flask_mongoengine.Document):
     abbreviations = EmbeddedDocumentField(StringLocations)
     bold = DictField()
