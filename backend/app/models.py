@@ -1,12 +1,12 @@
 # Third party imports
 import mongoengine as me
 
-class Level2StartIndex(me.EmbeddedDocument):
+class Level2Subdivisions(me.EmbeddedDocument):
     no_1 = me.ListField(me.IntField(), default=None)
     no_2 = me.ListField(me.IntField(), default=None) 
     no_3 = me.ListField(me.IntField(), default=None) 
 
-class Level1StartIndex(me.EmbeddedDocument):
+class Level1Subdivisions(me.EmbeddedDocument):
     meaning = me.ListField(me.IntField(), default=None) 
     a = me.ListField(me.IntField(), default=None)  
     b = me.ListField(me.IntField(), default=None)  
@@ -17,38 +17,53 @@ class Level1StartIndex(me.EmbeddedDocument):
     g = me.ListField(me.IntField(), default=None) 
     h = me.ListField(me.IntField(), default=None)  
     i = me.ListField(me.IntField(), default=None)
-    meaning_with_levels = me.EmbeddedDocumentField(Level2StartIndex)
-    a_with_levels = me.EmbeddedDocumentField(Level2StartIndex) 
-    b_with_levels = me.EmbeddedDocumentField(Level2StartIndex) 
-    c_with_levels = me.EmbeddedDocumentField(Level2StartIndex) 
-    d_with_levels = me.EmbeddedDocumentField(Level2StartIndex) 
-    e_with_levels = me.EmbeddedDocumentField(Level2StartIndex) 
-    f_with_levels = me.EmbeddedDocumentField(Level2StartIndex) 
-    g_with_levels = me.EmbeddedDocumentField(Level2StartIndex) 
-    h_with_levels = me.EmbeddedDocumentField(Level2StartIndex) 
-    i_with_levels = me.EmbeddedDocumentField(Level2StartIndex) 
+    meaning_subdivisions = me.EmbeddedDocumentField(Level2Subdivisions)
+    a_subdivisions = me.EmbeddedDocumentField(Level2Subdivisions) 
+    b_subdivisions = me.EmbeddedDocumentField(Level2Subdivisions) 
+    c_subdivisions = me.EmbeddedDocumentField(Level2Subdivisions) 
+    d_subdivisions = me.EmbeddedDocumentField(Level2Subdivisions) 
+    e_subdivisions = me.EmbeddedDocumentField(Level2Subdivisions) 
+    f_subdivisions = me.EmbeddedDocumentField(Level2Subdivisions) 
+    g_subdivisions = me.EmbeddedDocumentField(Level2Subdivisions) 
+    h_subdivisions = me.EmbeddedDocumentField(Level2Subdivisions) 
+    i_subdivisions = me.EmbeddedDocumentField(Level2Subdivisions) 
 
-class StartIndex(me.EmbeddedDocument):
+class Phrases(me.EmbeddedDocument):
+    no_1_phrase = me.ListField(me.IntField(), default=None)
+    no_2_phrase = me.ListField(me.IntField(), default=None) 
+    no_3_phrase = me.ListField(me.IntField(), default=None) 
+    no_4_phrase = me.ListField(me.IntField(), default=None) 
+    no_5_phrase = me.ListField(me.IntField(), default=None) 
+    no_6_phrase = me.ListField(me.IntField(), default=None) 
+    no_1_meaning = me.ListField(me.IntField(), default=None) 
+    no_2_meaning = me.ListField(me.IntField(), default=None) 
+    no_3_meaning = me.ListField(me.IntField(), default=None) 
+    no_4_meaning = me.ListField(me.IntField(), default=None) 
+    no_5_meaning = me.ListField(me.IntField(), default=None) 
+    no_6_meaning = me.ListField(me.IntField(), default=None) 
+
+class Meanings(me.EmbeddedDocument):
     meaning_1 = me.ListField(me.IntField(), default=None)
     meaning_2 = me.ListField(me.IntField(), default=None)
     meaning_3 = me.ListField(me.IntField(), default=None)
-    meaning_1_with_levels = me.EmbeddedDocumentField(Level1StartIndex)
-    meaning_2_with_levels = me.EmbeddedDocumentField(Level1StartIndex)
-    meaning_3_with_levels = me.EmbeddedDocumentField(Level1StartIndex)
+    meaning_1_subdivisions = me.EmbeddedDocumentField(Level1Subdivisions)
+    meaning_2_subdivisions = me.EmbeddedDocumentField(Level1Subdivisions)
+    meaning_3_subdivisions = me.EmbeddedDocumentField(Level1Subdivisions)
+    phrases = me.EmbeddedDocumentField(Phrases)
 
-class StringLocations(me.EmbeddedDocument):
+class StartIndex(me.EmbeddedDocument):
     string = me.StringField()
-    start_index = me.EmbeddedDocumentField(StartIndex)
+    start_index = me.EmbeddedDocumentField(Meanings)
 
 class UniqueOccurrences(me.EmbeddedDocument):
-    no_1 = me.EmbeddedDocumentField(StringLocations)
-    no_2 = me.EmbeddedDocumentField(StringLocations) 
-    no_3 = me.EmbeddedDocumentField(StringLocations) 
-    no_4 = me.EmbeddedDocumentField(StringLocations) 
-    no_5 = me.EmbeddedDocumentField(StringLocations) 
-    no_6 = me.EmbeddedDocumentField(StringLocations) 
-    no_7 = me.EmbeddedDocumentField(StringLocations) 
-    no_8 = me.EmbeddedDocumentField(StringLocations) 
+    no_1 = me.EmbeddedDocumentField(StartIndex)
+    no_2 = me.EmbeddedDocumentField(StartIndex) 
+    no_3 = me.EmbeddedDocumentField(StartIndex) 
+    no_4 = me.EmbeddedDocumentField(StartIndex) 
+    no_5 = me.EmbeddedDocumentField(StartIndex) 
+    no_6 = me.EmbeddedDocumentField(StartIndex) 
+    no_7 = me.EmbeddedDocumentField(StartIndex) 
+    no_8 = me.EmbeddedDocumentField(StartIndex) 
 
 class OrthographyWithAlternatives(me.EmbeddedDocument):
     preferred = me.ListField(me.StringField())
