@@ -22,7 +22,7 @@ local machine.
 This repository mainly exists to evidence the administrator's skills in
 full stack web development and his aptness for a full-time job therein.
 He is the sole contributor to Lexicon, and no pull requests are
-currently being granted.
+currently being granted, save those authored by GitHub's dependabot.
 
 ## Technology Stack
 
