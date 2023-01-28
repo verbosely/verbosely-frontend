@@ -77,7 +77,7 @@ class Orthography(me.EmbeddedDocument):
 
 class BaseWordDocument(me.Document):
     abbreviations = me.EmbeddedDocumentField(UniqueOccurrences)
-    bold = me.DictField()
+    bold = me.EmbeddedDocumentField(UniqueOccurrences)
     capital_required = me.DictField()
     cross_references = me.DictField()
     exclusiveness = me.DictField()
