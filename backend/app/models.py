@@ -75,10 +75,13 @@ class Orthography(me.EmbeddedDocument):
     singular_with_alternatives = me.EmbeddedDocumentField(OrthographyWithAlternatives)
     plural_with_alternatives = me.EmbeddedDocumentField(OrthographyWithAlternatives)
 
+class CapitalRequired(me.EmbeddedDocument):
+    meaning_2_subdivisions = me.ListField(me.StringField(), default=None)
+
 class BaseWordDocument(me.Document):
     abbreviations = me.EmbeddedDocumentField(UniqueOccurrences)
     bold = me.EmbeddedDocumentField(UniqueOccurrences)
-    capital_required = me.DictField()
+    capital_required = me.EmbeddedDocumentField(CapitalRequired)
     cross_references = me.DictField()
     exclusiveness = me.DictField()
     inline_audio = me.DictField()
