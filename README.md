@@ -1,6 +1,7 @@
 # Lexicon
 
-*A single-page web application for visualizing lexicographic data in the
+*A single-page web application for visualizing culturally and
+historically important lexicographic data in the
 browser.*
 
 ## Overview
