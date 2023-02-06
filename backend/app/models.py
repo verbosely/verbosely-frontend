@@ -46,6 +46,9 @@ class Meanings(me.EmbeddedDocument):
     meaning_1 = me.ListField(me.IntField(), default=None)
     meaning_2 = me.ListField(me.IntField(), default=None)
     meaning_3 = me.ListField(me.IntField(), default=None)
+    meaning_1_capital_required = me.ListField(me.StringField(), default=None) 
+    meaning_2_capital_required = me.ListField(me.StringField(), default=None) 
+    meaning_3_capital_required = me.ListField(me.StringField(), default=None) 
     meaning_1_subdivisions = me.EmbeddedDocumentField(Level1Subdivisions)
     meaning_2_subdivisions = me.EmbeddedDocumentField(Level1Subdivisions)
     meaning_3_subdivisions = me.EmbeddedDocumentField(Level1Subdivisions)
@@ -75,13 +78,10 @@ class Orthography(me.EmbeddedDocument):
     singular_with_alternatives = me.EmbeddedDocumentField(OrthographyWithAlternatives)
     plural_with_alternatives = me.EmbeddedDocumentField(OrthographyWithAlternatives)
 
-class CapitalRequired(me.EmbeddedDocument):
-    meaning_2_subdivisions = me.ListField(me.StringField(), default=None)
-
 class BaseWordDocument(me.Document):
     abbreviations = me.EmbeddedDocumentField(UniqueOccurrences)
     bold = me.EmbeddedDocumentField(UniqueOccurrences)
-    capital_required = me.EmbeddedDocumentField(CapitalRequired)
+    capital_required = me.EmbeddedDocumentField(Meanings)
     cross_references = me.DictField()
     exclusiveness = me.DictField()
     inline_audio = me.DictField()
