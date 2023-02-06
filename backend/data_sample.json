@@ -4,17 +4,17 @@
   },
   "main_vocab": true,
   "orthography": {
-    "plural": {
+    "singular": [
+      "A"
+    ],
+    "plural_with_alternatives": {
       "preferred": [
         "A's"
       ],
       "alternatives": [
         "As"
       ]
-    },
-    "singular": [
-      "A"
-    ]
+    }
   },
   "meanings": {
     "meaning_1": "The first letter of the English alphabet, and of most of the cognate alphabets. The A of the English and allied alphabets, as also the small form, \"a,\" besides the forms in Italic, black letter, etc., come from the Latin A, corresponding to the Greek Alpha, which had the same form as, and which came in turn from, Aleph (\"ox\"), the first letter of the Phœnician and old Hebrew alphabets. The Aleph was a letter of consonantal character, with a guttural breath sound, to which the various vowel sounds might be attached. The Greeks took it to represent the pure vowel sound (ä) of their Alpha. In English, various sounds are now represented by this letter (see Guide to Pron., § 112). Originally it had in our language, as it still has for the most part in the languages of continental Europe, the sound of \"Italian a\" (ä). The \"long a,\" as in fate, is a comparatively modern sound of \"a\" which has developed from the earlier ä. See ALPHABET, Illust.",
@@ -38,109 +38,6 @@
       "meaning": "As an abbreviation:",
       "a": "In the form A.: Various proper names, as Alfred, Anna, etc.; Absolute (as, 10° A. temperature); Absolvo, Lat. for, I absolve, acquit; Adulteress (a woman convicted of adultery being at one time compelled to wear a scarlet letter \"A\" as a badge of infamy, probably in allusion to the scarlet woman of Revelation); America, American; Antiquo, Lat. for, the old law (used on ballots among the Romans to signify a negative vote).",
       "b": "In the form a. or A.: accepted; acre; acting; active; ad, Lat. for \"at\" or for \"to\", usually written @; adjective; after; afternoon; aged; alto; amateur; ampere; (written ā or a͞a͞) ana; ana-; and; anno, Lat. for, in the year; annus, Lat. for, year; anode; anonymous; answer; ante; approved; are; argent; [without period, A] argon; artillery; assist; asymmetric."
-    }
-  },
-  "abbreviations": {
-    "1": {
-      "string": "etc.",
-      "start_index": {
-        "meaning_1": [
-          195
-        ],
-        "meaning_3": {
-          "a": [
-            55
-          ]
-        }
-      }
-    },
-    "2": {
-      "string": "Pron.",
-      "start_index": {
-        "meaning_1": [
-          670
-        ]
-      }
-    },
-    "3": {
-      "string": "Illust.",
-      "start_index": {
-        "meaning_1": [
-          943
-        ],
-        "meaning_2": {
-          "b": {
-            "2": [
-              107
-            ],
-            "3": [
-              55
-            ]
-          }
-        }
-      }
-    },
-    "4": {
-      "string": "A.",
-      "start_index": {
-        "meaning_3": {
-          "a": [
-            12,
-            79
-          ],
-          "b": [
-            18
-          ]
-        }
-      }
-    },
-    "5": {
-      "string": "Lat.",
-      "start_index": {
-        "meaning_3": {
-          "a": [
-            105,
-            343
-          ],
-          "b": [
-            58,
-            204,
-            234
-          ]
-        }
-      }
-    },
-    "6": {
-      "string": "a.",
-      "start_index": {
-        "meaning_3": {
-          "b": [
-            12
-          ]
-        }
-      }
-    },
-    "7": {
-      "string": "A",
-      "start_index": {
-        "meaning_3": {
-          "b": [
-            322
-          ]
-        }
-      }
-    },
-    "8": {
-      "string": "Cf.",
-      "start_index": {
-        "phrases": {
-          "6": {
-            "meaning": [
-              23
-            ]
-          }
-        }
-      }
     }
   },
   "transliterations": {
@@ -251,31 +148,6 @@
         "meaning_3": {
           "a": [
             79
-          ]
-        }
-      }
-    }
-  },
-  "bold": {
-    "1": {
-      "string": "A.",
-      "start_index": {
-        "meaning_3": {
-          "a": [
-            12
-          ],
-          "b": [
-            18
-          ]
-        }
-      }
-    },
-    "2": {
-      "string": "a.",
-      "start_index": {
-        "meaning_3": {
-          "b": [
-            12
           ]
         }
       }
@@ -535,15 +407,6 @@
       ]
     }
   },
-  "capital_required": {
-    "meaning_2": [
-      "c",
-      "d",
-      "g",
-      "h",
-      "i"
-    ]
-  },
   "quotations": {
     "1": {
       "string": "scarlet woman",
@@ -619,5 +482,140 @@
       },
       "audio": "phonemes/latin_small_a_with_diaeresis.m4a"
     }
+  },
+  "abbreviations": {
+    "no_1": {
+      "string": "etc.",
+      "start_index": {
+        "meaning_1": [
+          195
+        ],
+        "meaning_3_subdivisions": {
+          "a": [
+            55
+          ]
+        }
+      }
+    },
+    "no_2": {
+      "string": "Pron.",
+      "start_index": {
+        "meaning_1": [
+          670
+        ]
+      }
+    },
+    "no_3": {
+      "string": "Illust.",
+      "start_index": {
+        "meaning_1": [
+          943
+        ],
+        "meaning_2_subdivisions": {
+          "b_subdivisions": {
+            "no_2": [
+              107
+            ],
+            "no_3": [
+              55
+            ]
+          }
+        }
+      }
+    },
+    "no_4": {
+      "string": "A.",
+      "start_index": {
+        "meaning_3_subdivisions": {
+          "a": [
+            12,
+            79
+          ],
+          "b": [
+            18
+          ]
+        }
+      }
+    },
+    "no_5": {
+      "string": "Lat.",
+      "start_index": {
+        "meaning_3_subdivisions": {
+          "a": [
+            105,
+            343
+          ],
+          "b": [
+            58,
+            204,
+            234
+          ]
+        }
+      }
+    },
+    "no_6": {
+      "string": "a.",
+      "start_index": {
+        "meaning_3_subdivisions": {
+          "b": [
+            12
+          ]
+        }
+      }
+    },
+    "no_7": {
+      "string": "A",
+      "start_index": {
+        "meaning_3_subdivisions": {
+          "b": [
+            322
+          ]
+        }
+      }
+    },
+    "no_8": {
+      "string": "Cf.",
+      "start_index": {
+        "phrases": {
+          "no_6_meaning": [
+            23
+          ]
+        }
+      }
+    }
+  },
+  "bold": {
+    "no_1": {
+      "string": "A.",
+      "start_index": {
+        "meaning_3_subdivisions": {
+          "a": [
+            12
+          ],
+          "b": [
+            18
+          ]
+        }
+      }
+    },
+    "no_2": {
+      "string": "a.",
+      "start_index": {
+        "meaning_3_subdivisions": {
+          "b": [
+            12
+          ]
+        }
+      }
+    }
+  },
+  "capital_required": {
+    "meaning_2_capital_required": [
+      "c",
+      "d",
+      "g",
+      "h",
+      "i"
+    ]
   }
 }
