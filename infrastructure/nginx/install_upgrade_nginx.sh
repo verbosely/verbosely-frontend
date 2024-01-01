@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 
-# Run this script on EC2 instances to install/upgrade nginx from sources.
+# Run this script to download and install/upgrade nginx from sources.
+# The version to download is specified in a positional parameter.
 
 # Print a usage message to stderr.
 usage() {
