@@ -1,3 +1,6 @@
+# cache files
+__pycache__/
+
 add_github_key
 deploying_to_aws_ec2
 backend/.venv
