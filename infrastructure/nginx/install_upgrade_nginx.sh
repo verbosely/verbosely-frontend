@@ -1,10 +1,32 @@
 #! /usr/bin/env bash
 
 # Run this script on EC2 instances to install/upgrade nginx from sources.
-# The tar.gz archive must be in ~/Downloads.
 
-tar -zxf ~/Downloads/nginx-*tar.gz -C ~/Downloads;
-rm ~/Downloads/nginx-*tar.gz;
+# Print a usage message to stderr.
+usage() {
+  cat <<- USAGE >&2
+Usage: $(basename "${0}") [-h] version
+
+positional arguments:
+    version     the version number (x[x].x[x].x[x]) of nginx 
+                to download and install
+
+options:
+    -h, --help  print this message, and exit
+
+USAGE
+  exit 1
+}
+
+# Parse positional parameters.
+[ ! $# -ne 1 ] && [ ! $1 = "-h" ] && [ ! $1 = "--help" ] || usage;
+
+# Fetch the nginx archive.
+curl --output-dir ~/Downloads "https://nginx.org/download/nginx-$1.tar.gz" \
+    -o "nginx-latest.tar.gz";
+
+tar -zxf ~/Downloads/nginx-latest.tar.gz -C ~/Downloads;
+rm ~/Downloads/nginx-latest.tar.gz;
 sudo apt-get update;
 sudo apt-get upgrade;
 
