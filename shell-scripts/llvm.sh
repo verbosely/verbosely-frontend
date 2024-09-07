@@ -16,14 +16,11 @@ repo() {
 install_llvm() {
     PKGS=$(packages ${LLVM_VERSION})
     REPO=$(repo ${LLVM_VERSION})
-
     [ ! -f /etc/apt/trusted.gpg.d/apt.llvm.org.asc ] \
         && wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
             | tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
-
     add-apt-repository -L | grep "${REPO}" 1> /dev/null \
         || add-apt-repository -y "${REPO}"
-
     apt-get update
     apt-get -y install ${PKGS}
 }
@@ -31,7 +28,6 @@ install_llvm() {
 uninstall_llvm() {
     PKGS=$(packages ${CURRENT_VERSION})
     REPO=$(repo ${CURRENT_VERSION})
-
     [ ${CURRENT_VERSION} ] && [ ${CURRENT_VERSION} != ${LLVM_VERSION} ] \
         && apt-get -y purge ${PKGS} && apt-get -y autoremove \
         && add-apt-repository -L | grep "${REPO}" 1> /dev/null \
