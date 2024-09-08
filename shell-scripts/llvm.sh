@@ -12,8 +12,8 @@ check_binaries() {
         which ${binary} &> /dev/null || missing_binaries+=($binary)
     done
     [ ${#missing_binaries[@]} -gt 0 ] \
-        && echo "You must install the following tools to run this script: \
-            ${missing_binaries[@]}" >&2 \
+        && echo You must install the following tools to run this script: \
+            ${missing_binaries[@]} >&2 \
         && exit 1
 }
 
