@@ -32,7 +32,7 @@ check_root_user() {
 }
 
 check_binaries() {
-    needed_binaries=(lsb_release awk dpkg grep
+    needed_binaries=(lsb_release awk dpkg grep basename getopt
                      wget add-apt-repository tee apt-get)
     missing_binaries=()
     for binary in "${needed_binaries[@]}"; do
@@ -67,9 +67,9 @@ parse_args() {
     [ $# -ne 0 ] && usage >&2 && exit 1
 }
 
+check_binaries
 parse_args $*
 check_root_user
-check_binaries
 
 BASE_URL="http://apt.llvm.org"
 CODENAME=$(lsb_release -c | awk '{ print $NF }')
