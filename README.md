@@ -1,8 +1,9 @@
 # Lexicon
 
-*A single-page web application for visualizing culturally and
-historically important lexicographic data in the
-browser.*
+*This repository contains the Next.js SPA, Flask application, and HTTP/WSGI
+server configurations that provide browser-access to an ISO-24613-compliant
+machine-readable dictionary containing culturally and historically important
+lexicographic data.*
 
 ## Overview
 
