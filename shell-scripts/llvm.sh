@@ -44,13 +44,13 @@ check_binaries() {
 }
 
 parse_args() {
-    TEMP=$(getopt -o 'h' --long 'help' -n $(basename "${0}") -- "$@")
+    temp=$(getopt -o 'h' --long 'help' -n $(basename "${0}") -- "$@")
     getopt_exit_status=$?
     [ ${getopt_exit_status} -ne 0 ] \
         && echo 'Terminating...' >&2 \
         && exit ${getopt_exit_status}
-    eval set -- "$TEMP"
-    unset TEMP
+    eval set -- "${temp}"
+    unset temp
     while true; do
         case "$1" in
             '-h'|'--help')
@@ -81,19 +81,15 @@ REGEX_PATTERN="clang-([[:digit:]]+)"
 CURRENT_VERSION=${BASH_REMATCH[1]}
 CURRENT_LLVM_SOURCE_FILE="llvm-${CURRENT_VERSION}.list"
 LLVM_SOURCE_FILE="llvm-${LLVM_VERSION}.list"
+REPO="deb [arch=amd64 signed-by=${GPG_DIR}/${LLVM_GPG_BASENAME}] \
+    ${BASE_URL}/${CODENAME}/ llvm-toolchain-${CODENAME}-${LLVM_VERSION} main"
 
 packages() {
     echo "clang-$1 lldb-$1 lld-$1"
 }
 
-repo() {
-    echo deb [arch=amd64 signed-by=${GPG_DIR}/${LLVM_GPG_BASENAME}] \
-        ${BASE_URL}/${CODENAME}/ llvm-toolchain-${CODENAME}-$1 main
-}
-
 install_llvm() {
-    PKGS=$(packages ${LLVM_VERSION})
-    REPO=$(repo ${LLVM_VERSION})
+    pkgs=$(packages ${LLVM_VERSION})
     [ -f ${GPG_DIR}/${LLVM_GPG_BASENAME} ] \
         || wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
             | gpg -o ${GPG_DIR}/${LLVM_GPG_BASENAME} --dearmor \
@@ -102,15 +98,14 @@ install_llvm() {
     [ -f ${PPA_DIR}/${LLVM_SOURCE_FILE} ] \
         || bash -c "echo ${REPO} > ${PPA_DIR}/${LLVM_SOURCE_FILE}"
     apt-get update
-    apt-get -y install ${PKGS}
+    apt-get -y install ${pkgs}
     apt-get -y autoremove
 }
 
 uninstall_llvm() {
-    PKGS=$(packages ${CURRENT_VERSION})
-    REPO=$(repo ${CURRENT_VERSION})
+    pkgs=$(packages ${CURRENT_VERSION})
     [ ${CURRENT_VERSION} ] && [ ${CURRENT_VERSION} != ${LLVM_VERSION} ] \
-        && apt-get -y purge ${PKGS} \
+        && apt-get -y purge ${pkgs} \
         && [ -f ${PPA_DIR}/${CURRENT_LLVM_SOURCE_FILE} ] \
         && rm ${PPA_DIR}/${CURRENT_LLVM_SOURCE_FILE}
 }
