@@ -75,9 +75,10 @@ PPA_DIR="/etc/apt/sources.list.d"
 GPG_DIR="/usr/share/keyrings"
 LLVM_GPG_BASENAME="apt.llvm.org.gpg"
 CODENAME=$(lsb_release -c | awk '{ print $NF }')
-CURRENT_VERSION=$(dpkg --get-selections | grep "[[:blank:]]install$" \
-    | grep ^clang-[[:digit:]] | awk '{ print $1 }' \
-    | awk 'BEGIN { FS = "[^0-9]" }; { print $NF }')
+REGEX_PATTERN="clang-([[:digit:]]+)"
+[[ $(dpkg --get-selections | grep "^clang-[[:digit:]].*[[:blank:]]install$") \
+    =~ ${REGEX_PATTERN} ]]
+CURRENT_VERSION=${BASH_REMATCH[1]}
 CURRENT_LLVM_SOURCE_FILE="llvm-${CURRENT_VERSION}.list"
 LLVM_SOURCE_FILE="llvm-${LLVM_VERSION}.list"
 
