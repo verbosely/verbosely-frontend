@@ -85,11 +85,11 @@ REPO="deb [arch=amd64 signed-by=${GPG_DIR}/${LLVM_GPG_BASENAME}] \
     ${BASE_URL}/${CODENAME}/ llvm-toolchain-${CODENAME}-${LLVM_VERSION} main"
 
 packages() {
-    echo "clang-$1 lldb-$1 lld-$1"
+    pkgs="clang-$1 lldb-$1 lld-$1"
 }
 
 install_llvm() {
-    pkgs=$(packages ${LLVM_VERSION})
+    packages ${LLVM_VERSION}
     [ -f ${GPG_DIR}/${LLVM_GPG_BASENAME} ] \
         || wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
             | gpg -o ${GPG_DIR}/${LLVM_GPG_BASENAME} --dearmor \
@@ -103,7 +103,7 @@ install_llvm() {
 }
 
 uninstall_llvm() {
-    pkgs=$(packages ${CURRENT_VERSION})
+    packages ${CURRENT_VERSION}
     [ ${CURRENT_VERSION} ] && [ ${CURRENT_VERSION} != ${LLVM_VERSION} ] \
         && apt-get -y purge ${pkgs} \
         && [ -f ${PPA_DIR}/${CURRENT_LLVM_SOURCE_FILE} ] \
