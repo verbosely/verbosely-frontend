@@ -61,8 +61,10 @@ cd ~/Downloads/nginx-*;
 ./configure \
     --prefix=/usr/local/nginx \
     --with-http_ssl_module \
+    --with-http_gunzip_module \
     --with-http_gzip_static_module \
     --with-http_v2_module \
+    --with-http_v3_module \
     --with-stream;
 
 make;
