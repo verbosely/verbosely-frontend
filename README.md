@@ -1,30 +1,10 @@
 # Lexicon
 
-*This repository contains the Next.js SPA, Flask application, and HTTP/WSGI
-server configurations that provide browser-access to an ISO-24613-compliant
-machine-readable dictionary containing culturally and historically important
-lexicographic data.*
-
-## Overview
-
-This repository contains the core code base, server configuration files,
-and documentation for a locally hosted, single-page web application that
-retrieves and displays lexicographic data from a 1915 printing of
-*Webster's New International Dictionary of the English Language* - the
-third great revision of Noah Webster's original *American Dictionary of
-the English Language*.
-
-This web application presents semi-structured, hierarchical textual data
-in a unique format that provides convenience of consultation and brings
-a full and scholarly treatment of the whole field of the English
-language to the browser. The data whereon the code depends is not
-contained in this repository; it is stored in a MongoDB database on a
-local machine.
-
-This repository mainly exists to evidence the administrator's skills in
-full stack web development and his aptness for a full-time job therein.
-He is the sole contributor to Lexicon, and no pull requests are
-currently being granted, save those authored by GitHub's dependabot.
+This repository contains the Next.js SPA, FastAPI application, origin server
+and reverse proxy configurations, IaC, and automation scripts for the cloud
+infrastructure and web application that provide browser-access to an
+ISO-24613-compliant machine-readable dictionary containing culturally and
+historically important lexicographic data for the English language.
 
 ## Technology Stack
 
@@ -37,26 +17,23 @@ currently being granted, save those authored by GitHub's dependabot.
 
 ### Development OS:
 * Linux
-   * Ubuntu 22.04.1 LTS
+   * Ubuntu 22.04
 
 ### Frontend:
 #### Languages:
 * ECMAScript 2015 (JavaScript)
 * HTML5
 * CSS
-#### Toolchain:
-* Create React App
-   * React
-   * Babel
-   * webpack
-   * ESLint
-   * Jest
-   * PostCSS
+#### Syntax Extensions:
+* JSX
+#### Framework:
+* Next.js
 
 ### Backend:
-#### Web Servers:
+#### Reverse Proxy:
 * nginx
-* Gunicorn
+#### Application Server:
+* Uvicorn
 #### Database:
 * MongoDB Community Edition 6.0.3
    * [Lexicographic data](/backend/data_sample.json)
@@ -67,28 +44,22 @@ currently being granted, save those authored by GitHub's dependabot.
    * audio files
    * MongoDB WiredTiger files
 #### Web Framework:
-* Flask
-   * Werkzeug
-   * Jinja
-   * MarkupSafe
-   * ItsDangerous
-   * Click
+* FastAPI
 #### Application Language:
-* Python 3.11
+* Python 3.12
 
 ## Linux Tools Used
 * Bash
 * Git
-   * for distributed version control
 * LVM2 suite 
-   * for creating file system snapshots for MongoDB backups
 * OpenSSH suite
-   * for managing public-private key pairs (ssh-add, ssh-keygen)
-   * for copying files securely via SFTP/SSH protocols (scp)
-   * for adding private keys to agents for public key authentication (ssh-agent)
 * Vim
-   * for text editing
 * mkfs.xfs
-   * for creating XFS file systems
 * mount
-   * for attaching file systems to the Linux file hierarchy
+
+## Contributing
+
+This is not an open source project. I've made the repository public mainly to
+evidence my skills in full-stack web development and my aptness for a job in
+that field. I'm not accepting contributors.
+
