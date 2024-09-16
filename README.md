@@ -13,7 +13,7 @@ historically important lexicographic data for the English language.
 
 ### Frontend:
 #### Languages:
-* ECMAScript 2015 (JavaScript)
+* ECMAScript (JavaScript)
 * HTML5
 * CSS
 * JSX (syntax extension to JavaScript)
