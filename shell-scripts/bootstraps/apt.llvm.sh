@@ -111,7 +111,7 @@ REGEX_PATTERN="clang-([[:digit:]]+)"
     =~ ${REGEX_PATTERN} ]]
 CURRENT_VERSION=${BASH_REMATCH[1]}
 CURRENT_LLVM_SOURCE_FILE="llvm-${CURRENT_VERSION}.list"
-LLVM_SOURCE_FILE="llvm-${LLVM_VERSION}.list"
+LLVM_SOURCE_FILE="llvm.list"
 REPO="deb [arch=amd64 signed-by=${GPG_DIR}/${LLVM_GPG_BASENAME}] \
     ${BASE_URL}/${CODENAME}/ llvm-toolchain-${CODENAME}-${LLVM_VERSION} main"
 
