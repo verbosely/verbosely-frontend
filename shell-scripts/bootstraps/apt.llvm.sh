@@ -41,10 +41,10 @@ check_binaries() {
     for binary in "${needed_binaries[@]}"; do
         which ${binary} &> /dev/null || missing_binaries+=($binary)
     done
-    [ ${#missing_binaries[@]} -gt 0 ] \
-        && echo You must install the following tools to run this script: \
-            ${missing_binaries[@]} >&2 \
-        && exit 1
+    [ ${#missing_binaries[@]} -gt 0 ] &&
+        echo You must install the following tools to run this script: \
+            ${missing_binaries[@]} >&2 &&
+        exit 1
 }
 
 check_conflicting_args() {
@@ -64,9 +64,8 @@ parse_args() {
     temp=$(getopt -o 'hipr' -l 'help,install,purge,replace' \
         -n $(basename "${0}") -- "$@")
     getopt_exit_status=$?
-    [ ${getopt_exit_status} -ne 0 ] \
-        && echo 'Terminating...' >&2 \
-        && exit ${getopt_exit_status}
+    [ ${getopt_exit_status} -ne 0 ] && echo 'Terminating...' >&2 &&
+        exit ${getopt_exit_status}
     eval set -- "${temp}"
     unset temp
     while true; do
@@ -112,8 +111,12 @@ REGEX_PATTERN="clang-([[:digit:]]+)"
 CURRENT_VERSION=${BASH_REMATCH[1]}
 CURRENT_LLVM_SOURCE_FILE="llvm-${CURRENT_VERSION}.list"
 LLVM_SOURCE_FILE="llvm.list"
-REPO="deb [arch=amd64 signed-by=${GPG_DIR}/${LLVM_GPG_BASENAME}] \
-    ${BASE_URL}/${CODENAME}/ llvm-toolchain-${CODENAME}-${LLVM_VERSION} main"
+TYPE="deb"
+OPTIONS="[arch=amd64 signed-by=${GPG_DIR}/${LLVM_GPG_BASENAME}]"
+URI="${BASE_URL}/${CODENAME}/"
+SUITE="llvm-toolchain-${CODENAME}-${LLVM_VERSION}"
+COMPONENTS="main"
+REPO="${TYPE} ${OPTIONS} ${URI} ${SUITE} ${COMPONENTS}"
 
 packages() {
     pkgs="clang-$1 lldb-$1 lld-$1"
@@ -121,24 +124,28 @@ packages() {
 
 install_llvm() {
     packages ${LLVM_VERSION}
-    [ -f ${GPG_DIR}/${LLVM_GPG_BASENAME} ] \
-        || wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
-            | gpg -o ${GPG_DIR}/${LLVM_GPG_BASENAME} --dearmor \
-        && chmod 0644 ${GPG_DIR}/${LLVM_GPG_BASENAME}
+    [ -f ${GPG_DIR}/${LLVM_GPG_BASENAME} ] || {
+        wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
+            | gpg -o ${GPG_DIR}/${LLVM_GPG_BASENAME} --dearmor &&
+        chmod 0644 ${GPG_DIR}/${LLVM_GPG_BASENAME}
+    }
 
-    [ -f ${PPA_DIR}/${LLVM_SOURCE_FILE} ] \
-        || bash -c "echo ${REPO} > ${PPA_DIR}/${LLVM_SOURCE_FILE}"
-    apt-get update
+    grep -qsF "${REPO}" "${PPA_DIR}/${LLVM_SOURCE_FILE}" ||
+        bash -c "echo ${REPO} >> ${PPA_DIR}/${LLVM_SOURCE_FILE}"
+    echo -e "\nRunning apt-get update..."
+    apt-get -q update
+    echo -e "\nRunning apt-get install..."
     apt-get -y install ${pkgs}
+    echo -e "\nRunning apt-get autoremove..."
     apt-get -y autoremove
 }
 
 uninstall_llvm() {
     packages ${CURRENT_VERSION}
-    [ ${CURRENT_VERSION} ] && [ ${CURRENT_VERSION} != ${LLVM_VERSION} ] \
-        && apt-get -y purge ${pkgs} \
-        && [ -f ${PPA_DIR}/${CURRENT_LLVM_SOURCE_FILE} ] \
-        && rm ${PPA_DIR}/${CURRENT_LLVM_SOURCE_FILE}
+    [ ${CURRENT_VERSION} ] && [ ${CURRENT_VERSION} != ${LLVM_VERSION} ] &&
+        apt-get -y purge ${pkgs} &&
+        [ -f ${PPA_DIR}/${CURRENT_LLVM_SOURCE_FILE} ] &&
+        rm ${PPA_DIR}/${CURRENT_LLVM_SOURCE_FILE}
 }
 
 if [ ${INSTALL} ]; then
@@ -154,4 +161,5 @@ else
     else
         uninstall_llvm
         install_llvm
+    fi
 fi
