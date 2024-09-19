@@ -4,25 +4,29 @@ LLVM_VERSION=18
 
 usage() {
     cat <<- USAGE
-Usage: ./$(basename "${0}") [OPTION]
+Usage: ./$(basename "${0}") [OPTION...]
     
 Summary:
-    Install the LLVM tools needed to build Python with
-    --enable-optimizations and --with-lto configure options. The major
-    version to install is specified in the shell parameter
-    LLVM_VERSION (=${LLVM_VERSION}) at the top of the script. If a
-    different major version is already installed on the system, then
-    that version will be purged before the version that LLVM_VERSION
-    expands to is installed.
+    Purge and/or install LLVM packages for Debian-based systems.
 
-    The following LLVM tools will be installed:
+    The following LLVM tools will be purged and/or installed:
     clang: an "LLVM native" C/C++/Objective-C compiler
     lldb: a C/C++/Objective-C debugger
     lld: the LLVM linker
 
     Refer here for more info: https://llvm.org
 
-Options:
+Package management options:
+    -p | --purge    purge all existing LLVM packages
+    -i | --install  install LLVM packages for the version specified in
+                    the shell parameter LLVM_VERSION (=${LLVM_VERSION})
+                    located at the top of the script
+    -r | --replace  purge all existing LLVM packages, then install the
+                    version specified in the shell parameter
+                    LLVM_VERSION (=${LLVM_VERSION}); equivalent to
+                    running "./$(basename "${0}") -pi" (default)
+
+Other options:
     -h | --help     display this help text, and exit
 USAGE
 }
@@ -43,8 +47,22 @@ check_binaries() {
         && exit 1
 }
 
+check_conflicting_args() {
+    if [ ${REPLACE} ]; then
+        if [ ${INSTALL} ]; then
+            CONFLICTING_OPTS_MSG="Illegal combination of options: \
+                -r|--replace, -i|--install"
+        elif [ ${PURGE} ]; then
+            CONFLICTING_OPTS_MSG="Illegal combination of options: \
+                -r|--replace, -p|--purge"
+        fi
+    fi
+    [ "${CONFLICTING_OPTS_MSG}" ] && echo ${CONFLICTING_OPTS_MSG} >&2 && exit 1
+}
+
 parse_args() {
-    temp=$(getopt -o 'h' --long 'help' -n $(basename "${0}") -- "$@")
+    temp=$(getopt -o 'hipr' -l 'help,install,purge,replace' \
+        -n $(basename "${0}") -- "$@")
     getopt_exit_status=$?
     [ ${getopt_exit_status} -ne 0 ] \
         && echo 'Terminating...' >&2 \
@@ -57,11 +75,24 @@ parse_args() {
                 usage
                 exit 0
             ;;
+            '-i'|'--install')
+                [ -z ${INSTALL} ] && INSTALL="yes"
+                shift
+            ;;
+            '-p'|'--purge')
+                [ -z ${PURGE} ] && PURGE="yes"
+                shift
+            ;;
+            '-r'|'--replace')
+                [ -z ${REPLACE} ] && REPLACE="yes"
+                shift
+            ;;
             '--')
                 shift
                 break
             ;;
         esac
+        check_conflicting_args
     done
     [ $# -ne 0 ] && usage >&2 && exit 1
 }
