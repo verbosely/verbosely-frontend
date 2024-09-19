@@ -141,5 +141,17 @@ uninstall_llvm() {
         && rm ${PPA_DIR}/${CURRENT_LLVM_SOURCE_FILE}
 }
 
-uninstall_llvm
-install_llvm
+if [ ${INSTALL} ]; then
+    if [ -z ${PURGE} ]; then
+        install_llvm
+    else
+        uninstall_llvm
+        install_llvm
+    fi
+else
+    if [ ${PURGE} ]; then
+        uninstall_llvm
+    else
+        uninstall_llvm
+        install_llvm
+fi
