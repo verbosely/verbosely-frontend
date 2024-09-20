@@ -7,7 +7,7 @@ usage() {
 Usage: ./$(basename "${0}") [OPTION...]
     
 Summary:
-    Purge and/or install LLVM packages for Ubuntu.
+    Purge and/or install LLVM packages for Debian-based Linux.
 
     The following LLVM tools will be purged and/or installed:
     clang: an "LLVM native" C/C++/Objective-C compiler
