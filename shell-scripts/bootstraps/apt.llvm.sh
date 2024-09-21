@@ -129,9 +129,7 @@ check_root_user() {
     [ ${EUID} -ne 0 ] && error_and_exit
 }
 
-check_binaries
-parse_args $*
-check_root_user
+check_binaries; parse_args $*; check_root_user
 
 readonly BASE_URL="http://apt.llvm.org"
 readonly PPA_DIR="/etc/apt/sources.list.d"
