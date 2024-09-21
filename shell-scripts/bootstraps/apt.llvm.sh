@@ -31,7 +31,7 @@ Other options:
 USAGE
 }
 
-error_and_exit() {
+terminate() {
     local error_msg
     declare -i exit_status=1
     case "${FUNCNAME[1]}" in
@@ -68,13 +68,13 @@ error_and_exit() {
 
 check_binaries() {
     declare -a needed_binaries missing_binaries
-    which which &> /dev/null || error_and_exit "which"
+    which which &> /dev/null || terminate "which"
     needed_binaries=(apt-get awk dpkg getopt gpg grep lsb_release wget)
     missing_binaries=()
     for binary in "${needed_binaries[@]}"; do
         which ${binary} &> /dev/null || missing_binaries+=($binary)
     done
-    [ ${#missing_binaries[@]} -gt 0 ] && error_and_exit "${missing_binaries[*]}"
+    [ ${#missing_binaries[@]} -gt 0 ] && terminate "${missing_binaries[*]}"
 }
 
 check_conflicting_args() {
@@ -85,7 +85,7 @@ check_conflicting_args() {
         [ ${PURGE} ] && conflicting_opts="-r|--replace, -p|--purge"
     }
     fi
-    [ "${conflicting_opts}" ] && error_and_exit "${conflicting_opts}"
+    [ "${conflicting_opts}" ] && terminate "${conflicting_opts}"
 }
 
 parse_args() {
@@ -94,7 +94,7 @@ parse_args() {
     temp=$(getopt -o 'hipr' -l 'help,install,purge,replace' \
         -n $(basename "${0}") -- "$@")
     getopt_exit_status=$?
-    [ ${getopt_exit_status} -ne 0 ] && error_and_exit ${getopt_exit_status}
+    [ ${getopt_exit_status} -ne 0 ] && terminate ${getopt_exit_status}
     eval set -- "${temp}"
     unset temp
     while true; do
@@ -126,7 +126,7 @@ parse_args() {
 }
 
 check_root_user() {
-    [ ${EUID} -ne 0 ] && error_and_exit
+    [ ${EUID} -ne 0 ] && terminate
 }
 
 check_binaries; parse_args $*; check_root_user
