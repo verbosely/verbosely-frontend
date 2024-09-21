@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 readonly LLVM_VERSION=18
+declare -ar LLVM_PACKAGES=(clang lldb lld)
 
 usage() {
     cat <<- USAGE
@@ -150,11 +151,17 @@ readonly COMPONENTS="main"
 readonly REPO="${TYPE} ${OPTIONS} ${URI} ${SUITE} ${COMPONENTS}"
 
 packages() {
-    pkgs="clang-$1 lldb-$1 lld-$1"
+    for package in "${LLVM_PACKAGES[@]}"; do
+        install_pkgs+=(${package}-${LLVM_VERSION})
+    done
 }
 
 print_apt_progress() {
-    local progress_msg="\nRunning apt-get ${1}..."
+    local progress_msg
+    [ ${1} == "install" ] &&
+        progress_msg="\nRunning apt-get ${1}...\nInstalling \
+            the following packages: ${install_pkgs[*]}" ||
+        progress_msg="\nRunning apt-get ${1}..."
     tput -V &> /dev/null && {
         tput sgr0 2> /dev/null      # Turn off all attributes
         tput bold 2> /dev/null      # Turn on bold mode
@@ -184,8 +191,8 @@ print_source_list_progress() {
 }
 
 install_llvm() {
-    local pkgs
-    packages ${LLVM_VERSION}
+    declare -a install_pkgs=()
+    packages
     [ -f "${GPG_DIR}${LLVM_GPG_BASENAME}" ] || {
         print_source_list_progress "key" "${GPG_DIR}"
         wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
@@ -197,7 +204,7 @@ install_llvm() {
         bash -c "echo ${REPO} >> ${PPA_DIR}${LLVM_SOURCE_FILE}"
     }
     print_apt_progress "update"; apt-get -q update
-    print_apt_progress "install"; apt-get -y install ${pkgs}
+    print_apt_progress "install"; apt-get -y install "${install_pkgs[@]}"
     print_apt_progress "autoremove"; apt-get -y autoremove
 }
 
