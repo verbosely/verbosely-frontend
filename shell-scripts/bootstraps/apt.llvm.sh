@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-LLVM_VERSION=18
+readonly LLVM_VERSION=18
 
 usage() {
     cat <<- USAGE
@@ -31,41 +31,70 @@ Other options:
 USAGE
 }
 
-check_root_user() {
-    [ ${EUID} -ne 0 ] && echo "This script must be run as root!" >&2 && exit 1
+error_and_exit() {
+    local error_msg
+    declare -i exit_status=1
+    case "${FUNCNAME[1]}" in
+        'check_binaries')
+            error_msg="You must install the following \
+                tools to run this script: ${1}"
+        ;;
+        'check_conflicting_args')
+            error_msg="Illegal combination of options: ${1}"
+        ;;
+        'check_root_user')
+            error_msg="This script must be run as root!"
+        ;;
+        'parse_args')
+            error_msg="Terminating..."
+            exit_status=${1}
+        ;;
+        *)
+            error_msg="Something went wrong. Terminating..."
+        ;;
+    esac
+    tput -V &> /dev/null && {
+        tput sgr0 2> /dev/null      # Turn off all attributes
+        tput rev 2> /dev/null       # Turn on reverse video mode
+        tput bold 2> /dev/null      # Turn on bold mode
+        tput setaf 1 2> /dev/null   # Set foreground color
+        echo ${error_msg} >&2
+        tput sgr0 2> /dev/null      # Turn off all attributes
+        exit ${exit_status}
+    }
+    echo ${error_msg} >&2
+    exit ${exit_status}
 }
 
 check_binaries() {
-    needed_binaries=(lsb_release awk dpkg grep gpg getopt wget apt-get)
+    declare -a needed_binaries missing_binaries
+    which which &> /dev/null || error_and_exit "which"
+    needed_binaries=(apt-get awk dpkg getopt gpg grep lsb_release wget)
     missing_binaries=()
     for binary in "${needed_binaries[@]}"; do
         which ${binary} &> /dev/null || missing_binaries+=($binary)
     done
-    [ ${#missing_binaries[@]} -gt 0 ] &&
-        echo You must install the following tools to run this script: \
-            ${missing_binaries[@]} >&2 &&
-        exit 1
+    [ ${#missing_binaries[@]} -gt 0 ] && error_and_exit "${missing_binaries[*]}"
 }
 
 check_conflicting_args() {
-    if [ ${REPLACE} ]; then
-        if [ ${INSTALL} ]; then
-            CONFLICTING_OPTS_MSG="Illegal combination of options: \
-                -r|--replace, -i|--install"
-        elif [ ${PURGE} ]; then
-            CONFLICTING_OPTS_MSG="Illegal combination of options: \
-                -r|--replace, -p|--purge"
-        fi
+    local conflicting_opts
+    if [ ${REPLACE} ]; then {
+        [ ${INSTALL} ] && conflicting_opts="-r|--replace, -i|--install"
+    } || {
+        [ ${PURGE} ] && conflicting_opts="-r|--replace, -p|--purge"
+    }
     fi
-    [ "${CONFLICTING_OPTS_MSG}" ] && echo ${CONFLICTING_OPTS_MSG} >&2 && exit 1
+    [ "${conflicting_opts}" ] && error_and_exit "${conflicting_opts}"
 }
 
 parse_args() {
+    local temp
+    declare -i getopt_exit_status
     temp=$(getopt -o 'hipr' -l 'help,install,purge,replace' \
         -n $(basename "${0}") -- "$@")
     getopt_exit_status=$?
-    [ ${getopt_exit_status} -ne 0 ] && echo 'Terminating...' >&2 &&
-        exit ${getopt_exit_status}
+    [ ${getopt_exit_status} -ne 0 ] && error_and_exit ${getopt_exit_status}
     eval set -- "${temp}"
     unset temp
     while true; do
@@ -75,15 +104,15 @@ parse_args() {
                 exit 0
             ;;
             '-i'|'--install')
-                [ -z ${INSTALL} ] && INSTALL="yes"
+                [ -z ${INSTALL} ] && readonly INSTALL="yes"
                 shift
             ;;
             '-p'|'--purge')
-                [ -z ${PURGE} ] && PURGE="yes"
+                [ -z ${PURGE} ] && readonly PURGE="yes"
                 shift
             ;;
             '-r'|'--replace')
-                [ -z ${REPLACE} ] && REPLACE="yes"
+                [ -z ${REPLACE} ] && readonly REPLACE="yes"
                 shift
             ;;
             '--')
@@ -96,33 +125,38 @@ parse_args() {
     [ $# -ne 0 ] && usage >&2 && exit 1
 }
 
+check_root_user() {
+    [ ${EUID} -ne 0 ] && error_and_exit
+}
+
 check_binaries
 parse_args $*
 check_root_user
 
-BASE_URL="http://apt.llvm.org"
-PPA_DIR="/etc/apt/sources.list.d"
-GPG_DIR="/usr/share/keyrings"
-LLVM_GPG_BASENAME="apt.llvm.org.gpg"
-CODENAME=$(lsb_release -c | awk '{ print $NF }')
-REGEX_PATTERN="clang-([[:digit:]]+)"
+readonly BASE_URL="http://apt.llvm.org"
+readonly PPA_DIR="/etc/apt/sources.list.d"
+readonly GPG_DIR="/usr/share/keyrings"
+readonly LLVM_GPG_BASENAME="apt.llvm.org.gpg"
+readonly CODENAME=$(lsb_release -c | awk '{ print $NF }')
+readonly REGEX_PATTERN="clang-([[:digit:]]+)"
 [[ $(dpkg --get-selections | grep "^clang-[[:digit:]].*[[:blank:]]install$") \
     =~ ${REGEX_PATTERN} ]]
-CURRENT_VERSION=${BASH_REMATCH[1]}
-CURRENT_LLVM_SOURCE_FILE="llvm-${CURRENT_VERSION}.list"
-LLVM_SOURCE_FILE="llvm.list"
-TYPE="deb"
-OPTIONS="[arch=amd64 signed-by=${GPG_DIR}/${LLVM_GPG_BASENAME}]"
-URI="${BASE_URL}/${CODENAME}/"
-SUITE="llvm-toolchain-${CODENAME}-${LLVM_VERSION}"
-COMPONENTS="main"
-REPO="${TYPE} ${OPTIONS} ${URI} ${SUITE} ${COMPONENTS}"
+readonly CURRENT_VERSION=${BASH_REMATCH[1]}
+readonly CURRENT_LLVM_SOURCE_FILE="llvm-${CURRENT_VERSION}.list"
+readonly LLVM_SOURCE_FILE="llvm.list"
+readonly TYPE="deb"
+readonly OPTIONS="[arch=amd64 signed-by=${GPG_DIR}/${LLVM_GPG_BASENAME}]"
+readonly URI="${BASE_URL}/${CODENAME}/"
+readonly SUITE="llvm-toolchain-${CODENAME}-${LLVM_VERSION}"
+readonly COMPONENTS="main"
+readonly REPO="${TYPE} ${OPTIONS} ${URI} ${SUITE} ${COMPONENTS}"
 
 packages() {
     pkgs="clang-$1 lldb-$1 lld-$1"
 }
 
 install_llvm() {
+    local pkgs
     packages ${LLVM_VERSION}
     [ -f ${GPG_DIR}/${LLVM_GPG_BASENAME} ] || {
         wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
@@ -141,6 +175,7 @@ install_llvm() {
 }
 
 uninstall_llvm() {
+    local pkgs
     packages ${CURRENT_VERSION}
     [ ${CURRENT_VERSION} ] && [ ${CURRENT_VERSION} != ${LLVM_VERSION} ] &&
         apt-get -y purge ${pkgs} &&
