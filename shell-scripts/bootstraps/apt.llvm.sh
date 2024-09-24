@@ -51,9 +51,17 @@ terminate() {
             exit_status=${1}
         ;;
         'install_llvm')
-            error_msg="Could not download the OpenPGP \
-                public key from ${1}\nTerminating..."
-            exit_status=${2}
+            case "${1}" in
+                'key')
+                    error_msg="Could not download the OpenPGP \
+                        public key from ${2}\nTerminating..."
+                    exit_status=${3}
+                ;;
+                'update')
+                    error_msg="\"apt-get update\" failed!\nTerminating..."
+                    exit_status=${2}
+                ;;
+            esac
         ;;
         *)
             error_msg="Something went wrong. Terminating..."
@@ -220,7 +228,7 @@ install_llvm() {
         } || {
             wget_exit_status=$?
             rm ${GPG_DIR}${LLVM_GPG_BASENAME}
-            terminate "${BASE_URL}${GPG_PATH}" "${wget_exit_status}"
+            terminate "key" "${BASE_URL}${GPG_PATH}" "${wget_exit_status}"
         }
     fi
     grep -qsF "${REPO}" "${PPA_DIR}${LLVM_SOURCE_FILE}" &&
@@ -229,7 +237,7 @@ install_llvm() {
             bash -c "echo ${REPO} >> ${PPA_DIR}${LLVM_SOURCE_FILE}"
             print_source_list_progress "no source"
         }
-   print_apt_progress "update"; apt-get -q update
+   print_apt_progress "update"; apt-get -q update || terminate "update" $?
    print_apt_progress "install"; apt-get -yq install "${install_pkgs[@]}"
    print_apt_progress "autoremove"; apt-get -yq autoremove
 }
