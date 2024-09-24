@@ -80,18 +80,18 @@ check_binaries() {
     for binary in "${needed_binaries[@]}"; do
         which ${binary} &> /dev/null || missing_binaries+=($binary)
     done
-    [ ${#missing_binaries[@]} -gt 0 ] && terminate "${missing_binaries[*]}"
+    [ ${#missing_binaries[@]} -eq 0 ] || terminate "${missing_binaries[*]}"
 }
 
 check_conflicting_args() {
     local conflicting_opts
-    if [ ${REPLACE} ]; then {
-        [ ${INSTALL} ] && conflicting_opts="-r|--replace, -i|--install"
+    if [ ${replace} ]; then {
+        [ ${install} ] && conflicting_opts="-r|--replace, -i|--install"
     } || {
-        [ ${PURGE} ] && conflicting_opts="-r|--replace, -p|--purge"
+        [ -z ${purge} ] || conflicting_opts="-r|--replace, -p|--purge"
     }
     fi
-    [ "${conflicting_opts}" ] && terminate "${conflicting_opts}"
+    [ -z "${conflicting_opts}" ] || terminate "${conflicting_opts}"
 }
 
 parse_args() {
@@ -110,15 +110,15 @@ parse_args() {
                 exit 0
             ;;
             '-i'|'--install')
-                [ -z ${INSTALL} ] && readonly INSTALL="yes"
+                [ -z ${install} ] && readonly install="yes"
                 shift
             ;;
             '-p'|'--purge')
-                [ -z ${PURGE} ] && readonly PURGE="yes"
+                [ -z ${purge} ] && readonly purge="yes"
                 shift
             ;;
             '-r'|'--replace')
-                [ -z ${REPLACE} ] && readonly REPLACE="yes"
+                [ -z ${replace} ] && readonly replace="yes"
                 shift
             ;;
             '--')
@@ -128,28 +128,29 @@ parse_args() {
         esac
         check_conflicting_args
     done
-    [ $# -ne 0 ] && usage >&2 && exit 1
+    [ $# -eq 0 ] || { usage >&2 && exit 1; }
 }
 
 check_root_user() {
-    [ ${EUID} -ne 0 ] && terminate
+    [ ${EUID} -eq 0 ] || terminate
 }
 
-check_binaries; parse_args $*; check_root_user
-
-readonly BASE_URL="https://apt.llvm.org"
-readonly PPA_DIR="/etc/apt/sources.list.d/"
-readonly GPG_DIR="/usr/share/keyrings/"
-readonly GPG_PATH="/llvm-snapshot.gpg.key"
-readonly LLVM_GPG_BASENAME="llvm.gpg"
-readonly CODENAME=$(lsb_release -c | awk '{ print $NF }')
-readonly LLVM_SOURCE_FILE="llvm.list"
-readonly TYPE="deb"
-readonly OPTIONS="[arch=amd64 signed-by=${GPG_DIR}${LLVM_GPG_BASENAME}]"
-readonly URI="${BASE_URL}/${CODENAME}/"
-readonly SUITE="llvm-toolchain-${CODENAME}-${LLVM_VERSION}"
-readonly COMPONENTS="main"
-readonly REPO="${TYPE} ${OPTIONS} ${URI} ${SUITE} ${COMPONENTS}"
+define_constants() {
+    readonly BASE_URL="https://apt.llvm.org"
+    readonly PPA_DIR="/etc/apt/sources.list.d/"
+    readonly GPG_DIR="/usr/share/keyrings/"
+    readonly GPG_PATH="/llvm-snapshot.gpg.key"
+    readonly LLVM_GPG_BASENAME="llvm.gpg"
+    [[ $(lsb_release -c) =~ [[:blank:]]([[:alpha:]]+)$ ]]
+    readonly CODENAME="${BASH_REMATCH[1]}"
+    readonly LLVM_SOURCE_FILE="llvm.list"
+    readonly TYPE="deb"
+    readonly OPTIONS="[arch=amd64 signed-by=${GPG_DIR}${LLVM_GPG_BASENAME}]"
+    readonly URI="${BASE_URL}/${CODENAME}/"
+    readonly SUITE="llvm-toolchain-${CODENAME}-${LLVM_VERSION}"
+    readonly COMPONENTS="main"
+    readonly REPO="${TYPE} ${OPTIONS} ${URI} ${SUITE} ${COMPONENTS}"
+}
 
 print_apt_progress() {
     local progress_msg="\nRunning apt-get ${1}..."
@@ -254,11 +255,15 @@ purge_llvm() {
 }
 
 main() {
-    if [ ${INSTALL} ]; then
-        [ -z ${PURGE} ] && install_llvm || { purge_llvm && install_llvm; }
+    local install purge replace
+    check_binaries; parse_args $*; check_root_user; define_constants
+    unset -f usage check_binaries parse_args define_constants \
+        check_root_user check_conflicting_args
+    if [ ${install} ]; then
+        [ -z ${purge} ] && install_llvm || { purge_llvm && install_llvm; }
     else
-        purge_llvm; [ ${PURGE} ] || install_llvm
+        purge_llvm; [ ${purge} ] || install_llvm
     fi
 }
 
-main
+main $*
