@@ -34,7 +34,7 @@ USAGE
 
 terminate() {
     local error_msg
-    declare -i exit_status=1
+    local -i exit_status=1
     case "${FUNCNAME[1]}" in
         'check_binaries')
             error_msg="You must install the following \
@@ -73,7 +73,7 @@ terminate() {
 }
 
 check_binaries() {
-    declare -a needed_binaries missing_binaries
+    local -a needed_binaries missing_binaries
     which which &> /dev/null || terminate "which"
     needed_binaries=(apt-get awk dpkg getopt gpg grep lsb_release sed wget)
     missing_binaries=()
@@ -96,7 +96,7 @@ check_conflicting_args() {
 
 parse_args() {
     local temp
-    declare -i getopt_exit_status
+    local -i getopt_exit_status
     temp=$(getopt -o 'hipr' -l 'help,install,purge,replace' \
         -n $(basename "${0}") -- "$@")
     getopt_exit_status=$?
@@ -205,7 +205,7 @@ print_source_list_progress() {
 }
 
 install_llvm() {
-    declare -a install_pkgs=()
+    local -a install_pkgs=()
     local wget_exit_status
     install_pkgs+=($(echo "${LLVM_PACKAGES[@]}" \
         | sed "s/\([a-z]\+\)/\1-${LLVM_VERSION}/g"))
@@ -236,7 +236,7 @@ install_llvm() {
 }
 
 purge_llvm() {
-    declare -a purge_pkgs=()
+    local -a purge_pkgs=()
     local regexp='-[[:digit:]]\\+[[:blank:]]\\+install$\\|'
     regexp=$(echo "${LLVM_PACKAGES[*]}" | sed "s/\([a-z]\+\)/^\1${regexp}/g" \
         | sed 's/ //g')
