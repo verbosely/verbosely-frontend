@@ -50,6 +50,11 @@ terminate() {
             error_msg="Terminating..."
             exit_status=${1}
         ;;
+        'install_llvm')
+            error_msg="Could not download the OpenPGP \
+                public key from ${1}\nTerminating..."
+            exit_status=${2}
+        ;;
         *)
             error_msg="Something went wrong. Terminating..."
         ;;
@@ -59,18 +64,18 @@ terminate() {
         tput rev 2> /dev/null       # Turn on reverse video mode
         tput bold 2> /dev/null      # Turn on bold mode
         tput setaf 1 2> /dev/null   # Set foreground color to red
-        echo ${error_msg} >&2
+        echo -e ${error_msg} >&2
         tput sgr0 2> /dev/null      # Turn off all attributes
         exit ${exit_status}
     }
-    echo ${error_msg} >&2
+    echo -e ${error_msg} >&2
     exit ${exit_status}
 }
 
 check_binaries() {
     declare -a needed_binaries missing_binaries
     which which &> /dev/null || terminate "which"
-    needed_binaries=(apt-get awk dpkg getopt gpg grep lsb_release wget)
+    needed_binaries=(apt-get awk dpkg getopt gpg grep lsb_release sed wget)
     missing_binaries=()
     for binary in "${needed_binaries[@]}"; do
         which ${binary} &> /dev/null || missing_binaries+=($binary)
@@ -132,16 +137,12 @@ check_root_user() {
 
 check_binaries; parse_args $*; check_root_user
 
-readonly BASE_URL="http://apt.llvm.org"
+readonly BASE_URL="https://apt.llvm.org"
 readonly PPA_DIR="/etc/apt/sources.list.d/"
 readonly GPG_DIR="/usr/share/keyrings/"
-readonly LLVM_GPG_BASENAME="apt.llvm.org.gpg"
+readonly GPG_PATH="/llvm-snapshot.gpg.key"
+readonly LLVM_GPG_BASENAME="llvm.gpg"
 readonly CODENAME=$(lsb_release -c | awk '{ print $NF }')
-readonly REGEX_PATTERN="clang-([[:digit:]]+)"
-[[ $(dpkg --get-selections | grep "^clang-[[:digit:]].*[[:blank:]]install$") \
-    =~ ${REGEX_PATTERN} ]]
-readonly CURRENT_VERSION=${BASH_REMATCH[1]}
-readonly CURRENT_LLVM_SOURCE_FILE="llvm-${CURRENT_VERSION}.list"
 readonly LLVM_SOURCE_FILE="llvm.list"
 readonly TYPE="deb"
 readonly OPTIONS="[arch=amd64 signed-by=${GPG_DIR}${LLVM_GPG_BASENAME}]"
@@ -150,18 +151,17 @@ readonly SUITE="llvm-toolchain-${CODENAME}-${LLVM_VERSION}"
 readonly COMPONENTS="main"
 readonly REPO="${TYPE} ${OPTIONS} ${URI} ${SUITE} ${COMPONENTS}"
 
-packages() {
-    for package in "${LLVM_PACKAGES[@]}"; do
-        install_pkgs+=(${package}-${LLVM_VERSION})
-    done
-}
-
 print_apt_progress() {
-    local progress_msg
-    [ ${1} == "install" ] &&
-        progress_msg="\nRunning apt-get ${1}...\nInstalling \
-            the following packages: ${install_pkgs[*]}" ||
-        progress_msg="\nRunning apt-get ${1}..."
+    local progress_msg="\nRunning apt-get ${1}..."
+    case "${1}" in
+        'install')
+            progress_msg+="\nInstalling the following packages: \
+                ${install_pkgs[*]}"
+        ;;
+        'purge')
+            progress_msg+="\nPurging the following packages: ${purge_pkgs[*]}"
+        ;;
+    esac
     tput -V &> /dev/null && {
         tput sgr0 2> /dev/null      # Turn off all attributes
         tput bold 2> /dev/null      # Turn on bold mode
@@ -174,11 +174,24 @@ print_apt_progress() {
 print_source_list_progress() {
     local progress_msg
     case "${1}" in
-        'key')
-            progress_msg="\nAdding OpenPGP public key to ${2}"
+        'key found')
+            progress_msg="\nFound OpenPGP public key in ${GPG_DIR}"
         ;;
-        'sources')
-            progress_msg="\nAdding source to ${2}"
+        'no key')
+            progress_msg="\nAdded OpenPGP public key from \
+                ${BASE_URL}${GPG_PATH} to ${GPG_DIR}"
+        ;;
+        'remove key')
+            progress_msg="\nRemoved OpenPGP public key from ${GPG_DIR}"
+        ;;
+        'source found')
+            progress_msg="\nFound entry in ${PPA_DIR}${LLVM_SOURCE_FILE}"
+        ;;
+        'no source')
+            progress_msg="\nAdded entry to ${PPA_DIR}${LLVM_SOURCE_FILE}"
+        ;;
+        'remove source')
+            progress_msg="\nRemoved ${PPA_DIR}${LLVM_SOURCE_FILE}"
         ;;
     esac
     tput -V &> /dev/null && {
@@ -192,36 +205,59 @@ print_source_list_progress() {
 
 install_llvm() {
     declare -a install_pkgs=()
-    packages
-    [ -f "${GPG_DIR}${LLVM_GPG_BASENAME}" ] || {
-        print_source_list_progress "key" "${GPG_DIR}"
-        wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
-            | gpg -o ${GPG_DIR}${LLVM_GPG_BASENAME} --dearmor &&
-        chmod 0644 ${GPG_DIR}${LLVM_GPG_BASENAME}
-    }
-    grep -qsF "${REPO}" "${PPA_DIR}${LLVM_SOURCE_FILE}" || {
-        print_source_list_progress "sources" "${PPA_DIR}${LLVM_SOURCE_FILE}"
-        bash -c "echo ${REPO} >> ${PPA_DIR}${LLVM_SOURCE_FILE}"
-    }
-    print_apt_progress "update"; apt-get -q update
-    print_apt_progress "install"; apt-get -y install "${install_pkgs[@]}"
-    print_apt_progress "autoremove"; apt-get -y autoremove
+    local wget_exit_status
+    install_pkgs+=($(echo "${LLVM_PACKAGES[@]}" \
+        | sed "s/\([a-z]\+\)/\1-${LLVM_VERSION}/g"))
+    if [ -f "${GPG_DIR}${LLVM_GPG_BASENAME}" ]; then
+        print_source_list_progress "key found"
+    else
+        {
+            wget -qO ${GPG_DIR}${LLVM_GPG_BASENAME} ${BASE_URL}${GPG_PATH} &&
+                cat ${GPG_DIR}${LLVM_GPG_BASENAME} \
+                    | gpg --yes -o ${GPG_DIR}${LLVM_GPG_BASENAME} --dearmor &&
+                chmod 0644 ${GPG_DIR}${LLVM_GPG_BASENAME} &&
+                print_source_list_progress "no key"
+        } || {
+            wget_exit_status=$?
+            rm ${GPG_DIR}${LLVM_GPG_BASENAME}
+            terminate "${BASE_URL}${GPG_PATH}" "${wget_exit_status}"
+        }
+    fi
+    grep -qsF "${REPO}" "${PPA_DIR}${LLVM_SOURCE_FILE}" &&
+        print_source_list_progress "source found" ||
+        {
+            bash -c "echo ${REPO} >> ${PPA_DIR}${LLVM_SOURCE_FILE}"
+            print_source_list_progress "no source"
+        }
+   print_apt_progress "update"; apt-get -q update
+   print_apt_progress "install"; apt-get -yq install "${install_pkgs[@]}"
+   print_apt_progress "autoremove"; apt-get -yq autoremove
 }
 
-uninstall_llvm() {
-    local pkgs
-    packages ${CURRENT_VERSION}
-    [ ${CURRENT_VERSION} ] && [ ${CURRENT_VERSION} != ${LLVM_VERSION} ] &&
-        apt-get -y purge ${pkgs} &&
-        [ -f "${PPA_DIR}${CURRENT_LLVM_SOURCE_FILE}" ] &&
-        rm ${PPA_DIR}${CURRENT_LLVM_SOURCE_FILE}
+purge_llvm() {
+    declare -a purge_pkgs=()
+    local regexp='-[[:digit:]]\\+[[:blank:]]\\+install$\\|'
+    regexp=$(echo "${LLVM_PACKAGES[*]}" | sed "s/\([a-z]\+\)/^\1${regexp}/g" \
+        | sed 's/ //g')
+    purge_pkgs+=($(dpkg --get-selections | grep -o "${regexp}" \
+        | awk '{ print $1 }' | paste -s -d ' '))
+    [ -f "${PPA_DIR}${LLVM_SOURCE_FILE}" ] &&
+        rm ${PPA_DIR}${LLVM_SOURCE_FILE} &&
+        print_source_list_progress "remove source"
+    [ -f "${GPG_DIR}${LLVM_GPG_BASENAME}" ] &&
+        rm ${GPG_DIR}${LLVM_GPG_BASENAME} &&
+        print_source_list_progress "remove key"
+    [ ${#purge_pkgs[@]} -eq 0 ] || {
+        print_apt_progress "purge"; apt-get -yq purge "${purge_pkgs[@]}"
+        print_apt_progress "autoremove"; apt-get -yq autoremove
+    }
 }
 
 main() {
     if [ ${INSTALL} ]; then
-        [ -z ${PURGE} ] && install_llvm || { uninstall_llvm && install_llvm; }
+        [ -z ${PURGE} ] && install_llvm || { purge_llvm && install_llvm; }
     else
-        [ ${PURGE} ] && uninstall_llvm || { uninstall_llvm && install_llvm; }
+        purge_llvm; [ ${PURGE} ] || install_llvm
     fi
 }
 
