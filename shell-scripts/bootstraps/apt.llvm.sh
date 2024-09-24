@@ -258,6 +258,7 @@ purge_llvm() {
     [ ${#purge_pkgs[@]} -eq 0 ] || {
         print_apt_progress "purge"; apt-get -yq purge "${purge_pkgs[@]}"
         print_apt_progress "autoremove"; apt-get -yq autoremove
+        print_apt_progress "autoclean"; apt-get -yq autoclean
     }
 }
 
