@@ -73,10 +73,9 @@ terminate() {
 }
 
 check_binaries() {
-    local -a needed_binaries missing_binaries
+    local -a needed_binaries missing_binaries=()
     which which &> /dev/null || terminate "which"
     needed_binaries=(apt-get awk dpkg getopt gpg grep lsb_release sed wget)
-    missing_binaries=()
     for binary in "${needed_binaries[@]}"; do
         which ${binary} &> /dev/null || missing_binaries+=($binary)
     done
@@ -206,7 +205,7 @@ print_source_list_progress() {
 
 install_llvm() {
     local -a install_pkgs=()
-    local wget_exit_status
+    local -i wget_exit_status
     install_pkgs+=($(echo "${LLVM_PACKAGES[@]}" \
         | sed "s/\([a-z]\+\)/\1-${LLVM_VERSION}/g"))
     if [ -f "${GPG_DIR}${LLVM_GPG_BASENAME}" ]; then
