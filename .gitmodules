@@ -1,0 +1,3 @@
+[submodule "shell-scripts/bootstraps"]
+	path = shell-scripts/bootstraps
+	url = https://github.com/zflohr/bootstraps
