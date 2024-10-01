@@ -2,9 +2,9 @@
 
 This repository contains the Next.js SPA, FastAPI application, origin server
 and reverse proxy configurations, infrastructure-as-code, and automation scripts
-for a full-stack software system that provides browser-access to an
-ISO-24613-compliant machine-readable dictionary containing culturally and
-historically important lexicographic data concerning the English language.
+for a full-stack software system that provides browser-based access to an
+ISO-24613-compliant machine-readable dictionary containing lexicographic data
+that is in the public domain and that is foundational to Late Modern English.
 
 ## Technology Stack
 
