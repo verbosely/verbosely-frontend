@@ -34,45 +34,6 @@ Other options:
 USAGE
 }
 
-terminate() {
-    local error_msg
-    local -i exit_status=1
-    case "${FUNCNAME[1]}" in
-        'check_binaries')
-            error_msg="You must install the following \
-                tools to run this script: ${1}"
-        ;;
-        'check_conflicting_args')
-            error_msg="Illegal combination of options: ${1}"
-        ;;
-        'check_root_user')
-            error_msg="This script must be run as root!"
-        ;;
-        'parse_args')
-            error_msg="Terminating..."
-            exit_status=${1}
-        ;;
-        'install_llvm')
-            case "${1}" in
-                'key')
-                    error_msg="Could not download the OpenPGP \
-                        public key from ${2}\nTerminating..."
-                    exit_status=${3}
-                ;;
-                'update')
-                    error_msg="\"apt-get update\" failed!\nTerminating..."
-                    exit_status=${2}
-                ;;
-            esac
-        ;;
-        *)
-            error_msg="Something went wrong. Terminating..."
-        ;;
-    esac
-    print_message 1 "red" "${error_msg}"
-    exit ${exit_status}
-}
-
 check_binaries() {
     local -a needed_binaries missing_binaries=()
     which which &> /dev/null || terminate "which"
