@@ -118,10 +118,10 @@ print_apt_progress() {
     case "${1}" in
         'install')
             progress_msg+="\nInstalling the following packages: \
-                ${install_pkgs[*]}"
+                ${INSTALL_PKGS[*]}"
         ;;
         'purge')
-            progress_msg+="\nPurging the following packages: ${purge_pkgs[*]}"
+            progress_msg+="\nPurging the following packages: ${PURGE_PKGS[*]}"
         ;;
     esac
     print_message 0 "cyan" "${progress_msg}"
@@ -153,25 +153,43 @@ print_source_list_progress() {
     print_message 0 "cyan" "${progress_msg}"
 }
 
+download_public_key() {
+    wget -qO ${GPG_DIR}${LLVM_GPG_BASENAME} ${BASE_URL}${GPG_PATH} &&
+        cat ${GPG_DIR}${LLVM_GPG_BASENAME} \
+            | gpg --yes -o ${GPG_DIR}${LLVM_GPG_BASENAME} --dearmor &&
+        chmod 0644 ${GPG_DIR}${LLVM_GPG_BASENAME} &&
+        print_source_list_progress "no key" ||
+        {
+            local -ir WGET_EXIT_STATUS=$? &&
+            rm ${GPG_DIR}${LLVM_GPG_BASENAME} &&
+            terminate "${BASE_URL}${GPG_PATH}" "${WGET_EXIT_STATUS}"
+        }
+}
+
+apt_get() {
+    case "${FUNCNAME[1]}" in
+        'install_llvm')
+            print_apt_progress "update";
+            apt-get -q update || terminate "update" $?
+            print_apt_progress "install";
+            apt-get -yq install "${INSTALL_PKGS[@]}" || terminate "install" $?
+            print_apt_progress "autoremove"; apt-get -yq autoremove
+        ;;
+        'purge_llvm')
+            print_apt_progress "purge"; apt-get -yq purge "${PURGE_PKGS[@]}"
+            print_apt_progress "autoremove"; apt-get -yq autoremove
+            print_apt_progress "autoclean"; apt-get -yq autoclean
+        ;;
+    esac
+}
+
 install_llvm() {
-    local -a install_pkgs=()
-    local -i wget_exit_status
-    install_pkgs+=($(echo "${LLVM_PACKAGES[@]}" \
+    local -ar INSTALL_PKGS=($(echo "${LLVM_PACKAGES[@]}" \
         | sed "s/\([a-z]\+\)/\1-${LLVM_VERSION}/g"))
     if [ -f "${GPG_DIR}${LLVM_GPG_BASENAME}" ]; then
         print_source_list_progress "key found"
     else
-        {
-            wget -qO ${GPG_DIR}${LLVM_GPG_BASENAME} ${BASE_URL}${GPG_PATH} &&
-                cat ${GPG_DIR}${LLVM_GPG_BASENAME} \
-                    | gpg --yes -o ${GPG_DIR}${LLVM_GPG_BASENAME} --dearmor &&
-                chmod 0644 ${GPG_DIR}${LLVM_GPG_BASENAME} &&
-                print_source_list_progress "no key"
-        } || {
-            wget_exit_status=$?
-            rm ${GPG_DIR}${LLVM_GPG_BASENAME}
-            terminate "key" "${BASE_URL}${GPG_PATH}" "${wget_exit_status}"
-        }
+        download_public_key
     fi
     grep -qsF "${REPO}" "${PPA_DIR}${LLVM_SOURCE_FILE}" &&
         print_source_list_progress "source found" ||
@@ -179,17 +197,14 @@ install_llvm() {
             bash -c "echo ${REPO} >> ${PPA_DIR}${LLVM_SOURCE_FILE}"
             print_source_list_progress "no source"
         }
-   print_apt_progress "update"; apt-get -q update || terminate "update" $?
-   print_apt_progress "install"; apt-get -yq install "${install_pkgs[@]}"
-   print_apt_progress "autoremove"; apt-get -yq autoremove
+    apt_get
 }
 
 purge_llvm() {
-    local -a purge_pkgs=()
     local regexp='-[[:digit:]]\\+[[:blank:]]\\+install$\\|'
     regexp=$(echo "${LLVM_PACKAGES[*]}" | sed "s/\([a-z]\+\)/^\1${regexp}/g" \
         | sed 's/ //g')
-    purge_pkgs+=($(dpkg --get-selections | grep -o "${regexp}" \
+    local -ar PURGE_PKGS=($(dpkg --get-selections | grep -o "${regexp}" \
         | awk '{ print $1 }' | paste -s -d ' '))
     [ -f "${PPA_DIR}${LLVM_SOURCE_FILE}" ] &&
         rm ${PPA_DIR}${LLVM_SOURCE_FILE} &&
@@ -197,11 +212,7 @@ purge_llvm() {
     [ -f "${GPG_DIR}${LLVM_GPG_BASENAME}" ] &&
         rm ${GPG_DIR}${LLVM_GPG_BASENAME} &&
         print_source_list_progress "remove key"
-    [ ${#purge_pkgs[@]} -eq 0 ] || {
-        print_apt_progress "purge"; apt-get -yq purge "${purge_pkgs[@]}"
-        print_apt_progress "autoremove"; apt-get -yq autoremove
-        print_apt_progress "autoclean"; apt-get -yq autoclean
-    }
+    ! (( ${#PURGE_PKGS[@]} )) || apt_get
 }
 
 main() {
