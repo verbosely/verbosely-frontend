@@ -1,4 +1,4 @@
-# Lexicon
+# Verbosely
 
 This repository contains the Next.js SPA, FastAPI application, origin server
 and reverse proxy configurations, infrastructure-as-code, and automation scripts
